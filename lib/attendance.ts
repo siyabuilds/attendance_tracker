@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const ATTENDANCE_POINTS = 10;
+
 export const attendanceSchema = z.object({
   name: z
     .string()
@@ -41,4 +43,12 @@ export function isAttendanceOpen(
   now = new Date(),
 ) {
   return now >= event.startsAt && now <= event.endsAt;
+}
+
+export function calculateAttendancePoints(event: { rewardPoints: number }) {
+  return event.rewardPoints;
+}
+
+export function getAttendancePoints(attendanceCount: number) {
+  return attendanceCount * ATTENDANCE_POINTS;
 }

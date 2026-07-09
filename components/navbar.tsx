@@ -22,7 +22,7 @@ export function NavBar({ email }: NavBarProps) {
             <CalendarRange className="h-5 w-5" />
           </div>
           <div>
-            <span className="text-lg font-bold tracking-tight text-foreground bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text">
+            <span className="text-lg font-bold tracking-tight text-orange-700">
               Attendance Tracker
             </span>
             <span className="ml-1 text-xs font-semibold uppercase tracking-wider text-muted hidden sm:inline-block">
@@ -34,6 +34,12 @@ export function NavBar({ email }: NavBarProps) {
         {/* Auth status */}
         {email ? (
           <div className="flex items-center gap-4">
+            <Link
+              href="/admin/community"
+              className="hidden rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700 transition hover:bg-orange-100 hover:text-orange-800 md:inline-flex"
+            >
+              Leaderboard
+            </Link>
             <div className="flex items-center gap-2.5">
               <Avatar className="h-9 w-9 border border-orange-200 shadow-xs">
                 <AvatarFallback className="bg-orange-50 text-orange-600 font-bold text-sm">

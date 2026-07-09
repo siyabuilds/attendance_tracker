@@ -9,9 +9,13 @@ import {
   MapPin,
   PencilLine,
   Plus,
+  Trophy,
 } from "lucide-react";
 
-import { createEventAction, updateEventAction } from "@/app/admin/events/actions";
+import {
+  createEventAction,
+  updateEventAction,
+} from "@/app/admin/events/actions";
 import {
   eventToFormValues,
   type EventFormState,
@@ -117,6 +121,29 @@ export function EventForm({ mode, event }: EventFormProps) {
             />
           </InputShell>
           <FieldError messages={state?.errors?.venue} />
+        </div>
+
+        <div className="space-y-2">
+          <label
+            className="block text-xs font-semibold uppercase tracking-wider text-muted"
+            htmlFor="rewardPoints"
+          >
+            Reward Points
+          </label>
+          <InputShell icon={<Trophy className="h-4 w-4" />}>
+            <input
+              className="w-full rounded-md border border-border bg-surface py-3 pl-10 pr-4 text-sm text-foreground shadow-xs outline-none transition placeholder:text-muted/70 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+              id="rewardPoints"
+              name="rewardPoints"
+              type="number"
+              min={1}
+              step={1}
+              defaultValue={values.rewardPoints}
+              placeholder="10"
+              aria-invalid={Boolean(state?.errors?.rewardPoints)}
+            />
+          </InputShell>
+          <FieldError messages={state?.errors?.rewardPoints} />
         </div>
 
         <div className="space-y-2">

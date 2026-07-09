@@ -21,6 +21,7 @@ import {
   Mail,
   FileText,
   User,
+  Trophy,
 } from "lucide-react";
 
 type EventDetailsPageProps = {
@@ -182,6 +183,16 @@ export default async function EventDetailsPage({
                     </p>
                   </div>
                 </div>
+
+                <div className="flex items-start gap-2.5 text-sm">
+                  <Trophy className="h-4 w-4 text-orange-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-foreground">Reward Points</p>
+                    <p className="text-muted">
+                      {event.rewardPoints} per attendance
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {event.description && (
@@ -211,7 +222,7 @@ export default async function EventDetailsPage({
                     alt="Attendance Check-In QR"
                     width={200}
                     height={200}
-                    className="w-[180px] h-[180px] object-contain"
+                    className="w-45 h-45 object-contain"
                   />
                 </div>
 
@@ -264,7 +275,7 @@ export default async function EventDetailsPage({
 
           {/* Right Column: Attendance List */}
           <div className="space-y-6 lg:col-span-2">
-            <div className="rounded-md border border-border bg-surface shadow-xs min-h-[400px] flex flex-col">
+            <div className="rounded-md border border-border bg-surface shadow-xs min-h-100 flex flex-col">
               <div className="px-6 py-5 border-b border-border flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">
@@ -336,7 +347,7 @@ export default async function EventDetailsPage({
                             </td>
                             <td className="px-6 py-4 text-muted">
                               {attendee.reason ? (
-                                <div className="flex items-start gap-1.5 max-w-[240px]">
+                                <div className="flex items-start gap-1.5 max-w-60">
                                   <FileText className="h-3.5 w-3.5 text-muted/70 shrink-0 mt-0.5" />
                                   <span
                                     className="truncate"

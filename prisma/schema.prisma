@@ -22,6 +22,7 @@ model Event {
   venue       String
   startsAt    DateTime
   endsAt      DateTime
+  rewardPoints Int          @default(10)
   token       String       @unique
   createdAt   DateTime     @default(now())
   attendances Attendance[]

@@ -19,13 +19,13 @@ import {
 function getRelativeDateLabel(date: Date): string {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
+
   const target = new Date(date);
   target.setHours(0, 0, 0, 0);
-  
+
   const diffTime = target.getTime() - today.getTime();
   const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-  
+
   if (diffDays === 0) return "Today";
   if (diffDays === 1) return "Tomorrow";
   if (diffDays === -1) return "Yesterday";
@@ -58,7 +58,10 @@ export default async function AdminPage() {
 
   const getEventDateText = (date: Date) => {
     const relative = getRelativeDateLabel(date);
-    const timeStr = date.toLocaleTimeString("en-ZA", { hour: "2-digit", minute: "2-digit" });
+    const timeStr = date.toLocaleTimeString("en-ZA", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     if (relative) {
       return `${relative}, ${timeStr}`;
     }
@@ -76,7 +79,8 @@ export default async function AdminPage() {
     if (now >= startsAt && now <= endsAt) {
       return {
         label: "Active",
-        classes: "bg-emerald-50 text-emerald-700 border-emerald-200 animate-pulse",
+        classes:
+          "bg-emerald-50 text-emerald-700 border-emerald-200 animate-pulse",
       };
     }
     return {
@@ -218,7 +222,12 @@ export default async function AdminPage() {
                         <span className="inline-flex items-center gap-1 rounded-sm border border-border bg-orange-50/50 px-2 py-1 font-medium text-orange-700">
                           <Users className="h-3.5 w-3.5 text-orange-600 shrink-0" />
                           {event._count.attendances}{" "}
-                          {event._count.attendances === 1 ? "attendee" : "attendees"}
+                          {event._count.attendances === 1
+                            ? "attendee"
+                            : "attendees"}
+                        </span>
+                        <span className="text-xs text-muted">
+                          Reward Points: {event.rewardPoints}
                         </span>
                       </div>
                     </div>
@@ -242,7 +251,11 @@ export default async function AdminPage() {
                         </Link>
 
                         <form action={deleteEventAction}>
-                          <input type="hidden" name="eventId" value={event.id} />
+                          <input
+                            type="hidden"
+                            name="eventId"
+                            value={event.id}
+                          />
                           <button
                             className="inline-flex items-center gap-1.5 rounded-sm border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 transition hover:border-red-300 hover:bg-red-100 cursor-pointer"
                             type="submit"

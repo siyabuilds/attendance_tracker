@@ -12,7 +12,8 @@ import { prisma } from "@/lib/prisma";
  * e.g. "A7kLm29QaBcYtP81"
  */
 function generateAttendanceToken(): string {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const bytes = crypto.randomBytes(16);
   let token = "";
   for (let i = 0; i < 16; i++) {
@@ -29,6 +30,7 @@ export async function createEventAction(
     title: formData.get("title")?.toString() ?? "",
     description: formData.get("description")?.toString() ?? "",
     venue: formData.get("venue")?.toString() ?? "",
+    rewardPoints: formData.get("rewardPoints")?.toString() ?? "",
     startsAt: formData.get("startsAt")?.toString() ?? "",
     endsAt: formData.get("endsAt")?.toString() ?? "",
   });
@@ -45,6 +47,7 @@ export async function createEventAction(
     title: parsed.data.title,
     description: description.length > 0 ? description : null,
     venue: parsed.data.venue,
+    rewardPoints: parsed.data.rewardPoints,
     startsAt: new Date(parsed.data.startsAt),
     endsAt: new Date(parsed.data.endsAt),
   };
@@ -64,6 +67,7 @@ export async function createEventAction(
   }
 
   revalidatePath("/admin");
+  revalidatePath("/admin/community");
   redirect("/admin");
 }
 
@@ -83,6 +87,7 @@ export async function updateEventAction(
     title: formData.get("title")?.toString() ?? "",
     description: formData.get("description")?.toString() ?? "",
     venue: formData.get("venue")?.toString() ?? "",
+    rewardPoints: formData.get("rewardPoints")?.toString() ?? "",
     startsAt: formData.get("startsAt")?.toString() ?? "",
     endsAt: formData.get("endsAt")?.toString() ?? "",
   });
@@ -99,6 +104,7 @@ export async function updateEventAction(
     title: parsed.data.title,
     description: description.length > 0 ? description : null,
     venue: parsed.data.venue,
+    rewardPoints: parsed.data.rewardPoints,
     startsAt: new Date(parsed.data.startsAt),
     endsAt: new Date(parsed.data.endsAt),
   };
@@ -118,6 +124,7 @@ export async function updateEventAction(
   }
 
   revalidatePath("/admin");
+  revalidatePath("/admin/community");
   revalidatePath(`/admin/events/${eventId}`);
   redirect("/admin");
 }
@@ -146,6 +153,7 @@ export async function regenerateEventTokenAction(formData: FormData) {
   }
 
   revalidatePath("/admin");
+  revalidatePath("/admin/community");
   revalidatePath(`/admin/events/${eventId}`);
   redirect(`/admin/events/${eventId}`);
 }
@@ -164,6 +172,7 @@ export async function deleteEventAction(formData: FormData) {
       console.error("Error deleting event:", error);
     }
     revalidatePath("/admin");
+    revalidatePath("/admin/community");
   }
 
   redirect("/admin");
