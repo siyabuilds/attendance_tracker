@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Mail, Lock, AlertCircle } from "lucide-react";
 
 import { loginAction } from "@/app/login/actions";
 import type { LoginFormState } from "@/lib/auth";
@@ -12,7 +13,12 @@ function FieldError({ messages }: { messages?: string[] }) {
     return null;
   }
 
-  return <p className="mt-2 text-sm text-orange-800">{messages[0]}</p>;
+  return (
+    <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-red-600">
+      <AlertCircle className="h-3.5 w-3.5" />
+      {messages[0]}
+    </p>
+  );
 }
 
 export function LoginForm() {
@@ -22,53 +28,64 @@ export function LoginForm() {
   );
 
   return (
-    <form action={formAction} className="space-y-5">
-      <div>
+    <form action={formAction} className="space-y-6">
+      <div className="space-y-2">
         <label
-          className="mb-2 block text-sm font-medium text-foreground"
+          className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block"
           htmlFor="email"
         >
-          Email
+          Email Address
         </label>
-        <input
-          className="w-full rounded-sm border border-border bg-surface px-4 py-3 text-foreground shadow-sm outline-none transition placeholder:text-muted focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          placeholder="admin@example.com"
-          aria-invalid={Boolean(state?.errors?.email)}
-        />
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <Mail className="h-4 w-4 text-muted" />
+          </div>
+          <input
+            className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-3 text-sm text-foreground shadow-xs outline-none transition placeholder:text-muted/70 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 focus:bg-white"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="admin@example.com"
+            aria-invalid={Boolean(state?.errors?.email)}
+          />
+        </div>
         <FieldError messages={state?.errors?.email} />
       </div>
 
-      <div>
+      <div className="space-y-2">
         <label
-          className="mb-2 block text-sm font-medium text-foreground"
+          className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block"
           htmlFor="password"
         >
           Password
         </label>
-        <input
-          className="w-full rounded-sm border border-border bg-surface px-4 py-3 text-foreground shadow-sm outline-none transition placeholder:text-muted focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          placeholder="Your admin password"
-          aria-invalid={Boolean(state?.errors?.password)}
-        />
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <Lock className="h-4 w-4 text-muted" />
+          </div>
+          <input
+            className="w-full rounded-xl border border-border bg-surface pl-10 pr-4 py-3 text-sm text-foreground shadow-xs outline-none transition placeholder:text-muted/70 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 focus:bg-white"
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            placeholder="••••••••"
+            aria-invalid={Boolean(state?.errors?.password)}
+          />
+        </div>
         <FieldError messages={state?.errors?.password} />
       </div>
 
       {state?.formError ? (
-        <p className="rounded-sm border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-900">
-          {state.formError}
-        </p>
+        <div className="rounded-xl border border-red-100 bg-red-50/50 p-4 text-xs font-medium text-red-600 flex items-center gap-2">
+          <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
+          <span>{state.formError}</span>
+        </div>
       ) : null}
 
       <button
-        className="inline-flex w-full items-center justify-center rounded-sm bg-orange-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center rounded-xl bg-orange-600 px-4 py-3.5 text-sm font-semibold text-white shadow-md shadow-orange-600/10 transition-all hover:bg-orange-700 hover:shadow-orange-600/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:pointer-events-none cursor-pointer"
         type="submit"
         disabled={pending}
       >
