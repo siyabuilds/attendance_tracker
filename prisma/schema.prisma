@@ -38,5 +38,7 @@ model Attendance {
   reason    String?
   createdAt DateTime @default(now())
 
+  @@unique([eventId, email])
+
   @@map("attendance")
 }
