@@ -11,7 +11,7 @@ import {
   Plus,
 } from "lucide-react";
 
-import { saveEventAction } from "@/app/admin/events/actions";
+import { createEventAction, updateEventAction } from "@/app/admin/events/actions";
 import {
   eventToFormValues,
   type EventFormState,
@@ -66,7 +66,7 @@ function getButtonLabel(mode: EventFormProps["mode"], pending: boolean) {
 
 export function EventForm({ mode, event }: EventFormProps) {
   const [state, formAction, pending] = useActionState(
-    saveEventAction,
+    mode === "create" ? createEventAction : updateEventAction,
     initialState,
   );
   const values: EventFormValues = eventToFormValues(event);
