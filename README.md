@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Attendance Tracker
 
-## Getting Started
+An internal attendance system for managing events, issuing token-based check-in links, and tracking engagement from a private admin dashboard.
 
-First, run the development server:
+## What It Does
+
+- Admin login backed by a signed session cookie.
+- Event management for creating, editing, deleting, and regenerating attendance tokens.
+- Public attendance check-in pages at `/attend/[token]`.
+- Community leaderboard grouped by attendee email and ordered by total event reward points.
+- Attendance records are unique per event and email.
+
+## Tech Stack
+
+- Next.js 16 App Router
+- React 19
+- Prisma 7 with PostgreSQL
+- Tailwind CSS 4
+- Zod for form validation
+- bcryptjs for admin password hashing
+
+## Routes
+
+- `/` redirects to `/login`
+- `/login` admin sign-in page
+- `/admin` event dashboard
+- `/admin/events/new` create a new event
+- `/admin/events/[eventId]` event details and attendance token view
+- `/admin/events/[eventId]/edit` edit an event
+- `/admin/community` community leaderboard
+- `/attend/[token]` public attendance form for an event token
+
+## Environment Variables
+
+Create a `.env` file with at least:
+
+```bash
+DATABASE_URL="postgresql://user:password@localhost:5432/attendance_tracker"
+```
+
+Optional variables:
+
+```bash
+ADMIN_SESSION_SECRET="some-long-random-secret"
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="adminpassword123"
+```
+
+If `ADMIN_SESSION_SECRET` is not set, the app falls back to a development-only default session secret.
+
+## Setup
+
+1. Install dependencies.
+
+```bash
+npm install
+```
+
+2. Run the database migrations.
+
+```bash
+npx prisma migrate dev
+```
+
+3. Seed the default admin user.
+
+```bash
+npx prisma db seed
+```
+
+4. Start the development server.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and sign in at `/login`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Default Admin User
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The seed script creates one admin user if it does not already exist.
 
-## Learn More
+- Email: `admin@example.com`
+- Password: `adminpassword123`
 
-To learn more about Next.js, take a look at the following resources:
+You can override both values with `ADMIN_EMAIL` and `ADMIN_PASSWORD` before running the seed.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Core Behavior
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Events have a generated 16-character attendance token.
+- Check-in is allowed only while the event is between `startsAt` and `endsAt`.
+- Each attendance submission stores name, email, and an optional reason.
+- A single email can only check in once per event.
+- Leaderboard points come from each event's `rewardPoints` value.
 
-## Deploy on Vercel
+## Useful Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- The app uses `Poppins` for the UI typography.
+- Authentication is handled with a signed, HTTP-only cookie named `admin_session`.
+- Prisma is configured for PostgreSQL in `prisma/schema.prisma` and `lib/prisma.ts`.
