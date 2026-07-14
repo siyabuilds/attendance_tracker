@@ -123,7 +123,7 @@ export default async function CommunityLeaderboardPage() {
   return (
     <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-7xl space-y-6">
-        <section className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-xs">
+        <section className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-6 border-b border-slate-100 bg-gradient-to-br from-slate-50 via-white to-orange-50/20 px-6 py-7 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-2">
               <Link
@@ -133,54 +133,52 @@ export default async function CommunityLeaderboardPage() {
                 <ChevronLeft className="h-4 w-4" />
                 Back to dashboard
               </Link>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-orange-600">
+              <p className="text-xs font-semibold text-orange-700">
                 Community engagement
               </p>
               <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
                 Attendance leaderboard
               </h1>
               <p className="text-sm text-slate-500">
-                Attendance is grouped by email, scored from each event's reward
-                points, and ordered by total points so the most engaged
+                Attendance is grouped by email, scored from each event&apos;s
+                reward points, and ordered by total points so the most engaged
                 attendees rise to the top.
               </p>
             </div>
 
-            <div className="inline-flex items-center gap-2 rounded-xl border border-orange-100 bg-orange-50/50 px-4 py-2.5 text-sm font-semibold text-orange-700 shadow-xs">
+            <div className="inline-flex items-center gap-2 rounded border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
               <Sparkles className="h-4 w-4" />
               Central engagement view
             </div>
           </div>
 
           <div className="grid gap-4 px-6 py-5 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <div className="rounded-md border border-slate-200 bg-slate-50/50 p-5 transition hover:bg-slate-50">
+              <p className="text-xs font-semibold text-slate-500">
                 Community members
               </p>
               <p className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
                 {totalPeople}
               </p>
             </div>
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <div className="rounded-md border border-slate-200 bg-slate-50/50 p-5 transition hover:bg-slate-50">
+              <p className="text-xs font-semibold text-slate-500">
                 Total check-ins
               </p>
               <p className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
                 {totalCheckIns}
               </p>
             </div>
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <div className="rounded-md border border-slate-200 bg-slate-50/50 p-5 transition hover:bg-slate-50">
+              <p className="text-xs font-semibold text-slate-500">
                 Total points
               </p>
               <p className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
                 {totalPoints}
               </p>
             </div>
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                Leader
-              </p>
+            <div className="rounded-md border border-slate-200 bg-slate-50/50 p-5 transition hover:bg-slate-50">
+              <p className="text-xs font-semibold text-slate-500">Leader</p>
               <p className="mt-2 truncate text-sm font-bold text-slate-800">
                 {topAttendee ? topAttendee.name : "No attendance yet"}
               </p>
@@ -193,7 +191,7 @@ export default async function CommunityLeaderboardPage() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-slate-100 bg-white shadow-xs overflow-hidden">
+        <section className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
@@ -205,13 +203,13 @@ export default async function CommunityLeaderboardPage() {
               </p>
             </div>
             <p className="text-xs font-semibold text-slate-400">
-              Points come from each event's rewardPoints value
+              Points come from each event&apos;s rewardPoints value
             </p>
           </div>
 
           {leaderboard.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-3 bg-slate-50/20 px-6 py-16 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-orange-50 text-orange-600 shadow-xs border border-orange-100/50">
+              <div className="flex h-14 w-14 items-center justify-center rounded-md border border-orange-200 bg-orange-50 text-orange-600 shadow-xs">
                 <Users className="h-7 w-7" />
               </div>
               <h3 className="text-base font-bold text-slate-900">
@@ -226,7 +224,7 @@ export default async function CommunityLeaderboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-left text-sm text-slate-850">
                 <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/50 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  <tr className="border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-600">
                     <th className="px-6 py-4">Attendee</th>
                     <th className="px-6 py-4">Email</th>
                     <th className="px-6 py-4">Events attended</th>
@@ -246,11 +244,11 @@ export default async function CommunityLeaderboardPage() {
                     return (
                       <tr
                         key={entry.email}
-                        className="hover:bg-slate-50/40 transition-colors duration-150"
+                        className="transition-colors hover:bg-orange-50/30"
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-orange-100 bg-orange-50/60 text-xs font-bold text-orange-600 shadow-xs">
+                            <div className="flex h-9 w-9 items-center justify-center rounded border border-orange-200 bg-orange-50 text-xs font-bold text-orange-700 shadow-xs">
                               {index === 0 ? (
                                 <Crown className="h-4 w-4" />
                               ) : (
@@ -284,7 +282,7 @@ export default async function CommunityLeaderboardPage() {
                             {entry.attendanceCount === 1 ? "event" : "events"}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap font-bold text-slate-900">
+                        <td className="px-6 py-4 whitespace-nowrap font-semibold text-slate-900">
                           {entry.points}
                         </td>
                         <td className="px-6 py-4 text-slate-500">
@@ -313,14 +311,14 @@ export default async function CommunityLeaderboardPage() {
           )}
         </section>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-md border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500 font-medium">
             Need event-level attendance instead? Jump back to the admin
             dashboard.
           </p>
           <Link
             href="/admin"
-            className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4.5 py-2.5 text-sm font-semibold text-white shadow-md shadow-orange-600/10 transition-all hover:bg-orange-500 hover:shadow-lg hover:shadow-orange-600/20 active:scale-[0.98] cursor-pointer"
+            className="inline-flex h-10 items-center gap-2 rounded bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md"
           >
             <ArrowUpRight className="h-4 w-4" />
             Open dashboard

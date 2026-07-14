@@ -99,10 +99,10 @@ export default async function AdminPage() {
   return (
     <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-        <section className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-xs">
+        <section className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-6 border-b border-slate-100 bg-linear-to-br from-slate-50 via-white to-orange-50/20 px-6 py-7 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-2">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-orange-600">
+              <p className="text-xs font-semibold text-orange-700">
                 Admin Dashboard
               </p>
               <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
@@ -119,7 +119,7 @@ export default async function AdminPage() {
             </div>
 
             <Link
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-4.5 py-2.5 text-sm font-semibold text-white shadow-md shadow-orange-600/10 transition-all hover:bg-orange-500 hover:shadow-lg hover:shadow-orange-600/20 active:scale-[0.98] cursor-pointer"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md active:scale-[0.99]"
               href="/admin/events/new"
             >
               <Plus className="h-4 w-4" />
@@ -128,26 +128,24 @@ export default async function AdminPage() {
           </div>
 
           <div className="grid gap-4 px-6 py-5 sm:grid-cols-3">
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <div className="rounded-md border border-slate-200 bg-slate-50/50 p-5 transition hover:bg-slate-50">
+              <p className="text-xs font-semibold text-slate-500">
                 Total events
               </p>
               <p className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
                 {events.length}
               </p>
             </div>
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <div className="rounded-md border border-slate-200 bg-slate-50/50 p-5 transition hover:bg-slate-50">
+              <p className="text-xs font-semibold text-slate-500">
                 Upcoming events
               </p>
               <p className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
                 {upcomingEvents}
               </p>
             </div>
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                Active now
-              </p>
+            <div className="rounded-md border border-slate-200 bg-slate-50/50 p-5 transition hover:bg-slate-50">
+              <p className="text-xs font-semibold text-slate-500">Active now</p>
               <p className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
                 {activeEvents}
               </p>
@@ -171,7 +169,7 @@ export default async function AdminPage() {
           </div>
 
           {events.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-white p-12 text-center shadow-xs max-w-md mx-auto">
+            <div className="mx-auto max-w-md rounded-md border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
               <CalendarDays className="mx-auto h-12 w-12 text-orange-500/80 mb-4" />
               <h3 className="text-base font-bold text-slate-900">
                 No events yet
@@ -180,7 +178,7 @@ export default async function AdminPage() {
                 Create the first event to get the dashboard moving.
               </p>
               <Link
-                className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-4.5 py-2.5 text-sm font-semibold text-white shadow-md shadow-orange-600/10 transition-all hover:bg-orange-500 hover:shadow-lg hover:shadow-orange-600/20 active:scale-[0.98]"
+                className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md"
                 href="/admin/events/new"
               >
                 <Plus className="h-4 w-4" />
@@ -194,7 +192,7 @@ export default async function AdminPage() {
                 return (
                   <article
                     key={event.id}
-                    className="group relative rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-300 hover:border-orange-200/80 hover:shadow-md hover:-translate-y-0.5 flex flex-col justify-between"
+                    className="group relative flex flex-col justify-between rounded-md border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:border-orange-200 hover:shadow-md"
                   >
                     <div className="space-y-3">
                       <div className="flex items-start justify-between gap-4">
@@ -253,7 +251,7 @@ export default async function AdminPage() {
 
                       <div className="flex gap-2">
                         <Link
-                          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-orange-600 transition shadow-xs cursor-pointer"
+                          className="inline-flex h-9 items-center gap-1.5 rounded border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-orange-700"
                           href={`/admin/events/${event.id}/edit`}
                         >
                           <Edit3 className="h-3.5 w-3.5" />
@@ -267,7 +265,7 @@ export default async function AdminPage() {
                             value={event.id}
                           />
                           <button
-                            className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50/50 px-3.5 py-1.5 text-xs font-bold text-red-700 hover:bg-red-100 hover:border-red-300 transition shadow-xs cursor-pointer"
+                            className="inline-flex h-9 items-center gap-1.5 rounded border border-red-200 bg-red-50 px-3 text-sm font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100"
                             type="submit"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
