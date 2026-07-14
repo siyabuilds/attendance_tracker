@@ -41,22 +41,24 @@ export default async function EventDetailsPage({
   }
 
   const { eventId } = await params;
-  const event = await prisma.event.findUnique({
-    where: {
-      id: eventId,
-    },
+
+  // load full event with questions and attendances + their answers
+  const eventFull = await prisma.event.findUnique({
+    where: { id: eventId },
     include: {
+      questions: { orderBy: { order: "asc" } },
       attendances: {
-        orderBy: {
-          createdAt: "desc",
-        },
+        orderBy: { createdAt: "desc" },
+        include: { answers: { include: { question: true } } },
       },
     },
   });
 
-  if (!event) {
+  if (!eventFull) {
     notFound();
   }
+
+  const event = eventFull;
 
   const formatDateTime = new Intl.DateTimeFormat("en-ZA", {
     dateStyle: "medium",
@@ -94,6 +96,7 @@ export default async function EventDetailsPage({
   };
 
   const status = getStatus(event.startsAt, event.endsAt);
+  const questions = (eventFull as any)?.questions ?? [];
 
   return (
     <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
@@ -159,15 +162,21 @@ export default async function EventDetailsPage({
                 <div className="flex items-start gap-2.5 text-sm">
                   <MapPin className="h-4 w-4 text-orange-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-slate-700 text-xs">Venue</p>
-                    <p className="text-sm text-slate-500 mt-0.5">{event.venue}</p>
+                    <p className="font-semibold text-slate-700 text-xs">
+                      Venue
+                    </p>
+                    <p className="text-sm text-slate-500 mt-0.5">
+                      {event.venue}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2.5 text-sm">
                   <CalendarDays className="h-4 w-4 text-orange-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-slate-700 text-xs">Starts At</p>
+                    <p className="font-semibold text-slate-700 text-xs">
+                      Starts At
+                    </p>
                     <p className="text-sm text-slate-500 mt-0.5">
                       {formatDateTime.format(event.startsAt)}
                     </p>
@@ -177,7 +186,9 @@ export default async function EventDetailsPage({
                 <div className="flex items-start gap-2.5 text-sm">
                   <Clock3 className="h-4 w-4 text-orange-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-slate-700 text-xs">Ends At</p>
+                    <p className="font-semibold text-slate-700 text-xs">
+                      Ends At
+                    </p>
                     <p className="text-sm text-slate-500 mt-0.5">
                       {formatDateTime.format(event.endsAt)}
                     </p>
@@ -187,7 +198,9 @@ export default async function EventDetailsPage({
                 <div className="flex items-start gap-2.5 text-sm">
                   <Trophy className="h-4 w-4 text-orange-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-slate-700 text-xs">Reward Points</p>
+                    <p className="font-semibold text-slate-700 text-xs">
+                      Reward Points
+                    </p>
                     <p className="text-sm text-slate-500 mt-0.5">
                       {event.rewardPoints} points per attendance
                     </p>
@@ -203,6 +216,40 @@ export default async function EventDetailsPage({
                   <p className="text-sm text-slate-500 whitespace-pre-wrap leading-relaxed">
                     {event.description}
                   </p>
+                </div>
+              )}
+
+              {questions.length > 0 && (
+                <div className="pt-4 border-t border-slate-100 space-y-2">
+                  <p className="text-xs font-semibold text-slate-700">
+                    Additional Questions
+                  </p>
+                  <div className="space-y-2">
+                    {questions.map((q: any) => (
+                      <div
+                        key={q.id}
+                        className="flex items-center justify-between gap-3"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-slate-700">
+                            {q.label}
+                          </p>
+                          <p className="text-xs text-slate-500">Type: TEXT</p>
+                        </div>
+                        <div>
+                          {q.required ? (
+                            <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold bg-amber-50 text-amber-700 border-amber-100">
+                              Required
+                            </span>
+                          ) : (
+                            <span className="text-xs text-slate-400 italic">
+                              Optional
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -323,7 +370,10 @@ export default async function EventDetailsPage({
                               .toUpperCase()
                           : "";
                         return (
-                          <tr key={attendee.id} className="hover:bg-slate-50/40 transition-colors duration-150">
+                          <tr
+                            key={attendee.id}
+                            className="hover:bg-slate-50/40 transition-colors duration-150"
+                          >
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center gap-3">
                                 <div className="h-8 w-8 rounded-xl bg-orange-50/75 text-orange-600 border border-orange-100/50 flex items-center justify-center text-xs font-bold shadow-xs">
@@ -337,7 +387,9 @@ export default async function EventDetailsPage({
                             <td className="px-6 py-4 whitespace-nowrap text-slate-500">
                               <div className="flex items-center gap-1.5">
                                 <Mail className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                                <span className="font-medium">{attendee.email}</span>
+                                <span className="font-medium">
+                                  {attendee.email}
+                                </span>
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-slate-500 font-medium">
@@ -370,6 +422,82 @@ export default async function EventDetailsPage({
                 </div>
               )}
             </div>
+
+            {/* Question answers table */}
+            {questions.length > 0 && (
+              <div className="rounded-2xl border border-slate-100 bg-white shadow-xs overflow-x-auto">
+                <div className="px-6 py-5 border-b border-slate-100">
+                  <h3 className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                    Question Answers
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    Rows per email; name excluded.
+                  </p>
+                </div>
+
+                {event.attendances.length === 0 ? (
+                  <div className="p-8 text-center text-sm text-slate-500">
+                    No answers yet
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm text-slate-850 border-collapse">
+                      <thead>
+                        <tr className="border-b border-slate-100 bg-slate-50/50 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                          <th className="px-6 py-3">Email</th>
+                          {questions.map((q: any) => (
+                            <th
+                              key={q.id}
+                              className="px-6 py-3 break-words max-w-xs"
+                            >
+                              {q.label}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {event.attendances.map((att) => {
+                          const answersMap: Record<string, string> = {};
+                          (att.answers ?? []).forEach((a: any) => {
+                            answersMap[a.questionId] = a.answer;
+                          });
+
+                          return (
+                            <tr
+                              key={att.id}
+                              className="hover:bg-slate-50/40 transition-colors duration-150"
+                            >
+                              <td className="px-6 py-3 whitespace-nowrap text-slate-700 font-medium">
+                                {att.email}
+                              </td>
+                              {questions.map((q: any) => (
+                                <td
+                                  key={q.id}
+                                  className="px-6 py-3 text-slate-500 max-w-xs truncate"
+                                >
+                                  {answersMap[q.id] ? (
+                                    <span
+                                      title={answersMap[q.id]}
+                                      className="font-medium text-slate-700"
+                                    >
+                                      {answersMap[q.id]}
+                                    </span>
+                                  ) : (
+                                    <span className="text-xs italic text-slate-400">
+                                      —
+                                    </span>
+                                  )}
+                                </td>
+                              ))}
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

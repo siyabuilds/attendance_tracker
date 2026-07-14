@@ -17,6 +17,11 @@ export default async function EventEditPage({ params }: EventEditPageProps) {
       id: eventId,
     },
   });
+  // fetch questions explicitly when editing
+  const eventWithQuestions = await prisma.event.findUnique({
+    where: { id: eventId },
+    include: { questions: { orderBy: { order: "asc" } } },
+  });
 
   if (!event) {
     notFound();
@@ -56,6 +61,9 @@ export default async function EventEditPage({ params }: EventEditPageProps) {
               rewardPoints: event.rewardPoints,
               startsAt: event.startsAt,
               endsAt: event.endsAt,
+              // include questions if present
+              // @ts-ignore - extend event prop with questions for edit mode
+              questions: (eventWithQuestions as any)?.questions ?? [],
             }}
           />
         </section>
