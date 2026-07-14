@@ -24,7 +24,8 @@ export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
 
 export type AttendanceFormState =
   | {
-      errors?: Partial<Record<keyof AttendanceFormValues, string[]>>;
+      // allow arbitrary keys for dynamic question answer errors (e.g. "answer-<questionId>")
+      errors?: Partial<Record<string, string[]>>;
       formError?: string;
     }
   | {

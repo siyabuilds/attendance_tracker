@@ -7,6 +7,20 @@ import { redirect } from "next/navigation";
 import { eventSchema, type EventFormState } from "@/lib/events";
 import { prisma } from "@/lib/prisma";
 
+function parseQuestionsFromForm(formData: FormData) {
+  const count = Number(formData.get("questions-count")?.toString() ?? "0");
+  const questions: { label: string; required: boolean; order: number }[] = [];
+  for (let i = 0; i < count; i++) {
+    const label = formData.get(`question-label-${i}`)?.toString() ?? "";
+    const required = Boolean(formData.get(`question-required-${i}`));
+    const trimmed = label.trim();
+    if (trimmed.length > 0) {
+      questions.push({ label: trimmed, required, order: i });
+    }
+  }
+  return questions;
+}
+
 /**
  * Generates a cryptographically secure 16-character alphanumeric token
  * e.g. "A7kLm29QaBcYtP81"
@@ -53,11 +67,30 @@ export async function createEventAction(
   };
 
   try {
-    await prisma.event.create({
-      data: {
-        ...eventData,
-        token: generateAttendanceToken(),
-      },
+    const questions = parseQuestionsFromForm(formData);
+    await prisma.$transaction(async (tx) => {
+      const created = await tx.event.create({
+        data: {
+          ...eventData,
+          token: generateAttendanceToken(),
+        },
+      });
+
+      if (questions.length) {
+        // create questions individually to avoid createMany compatibility issues
+        await Promise.all(
+          questions.map((q) =>
+            tx.eventQuestion.create({
+              data: {
+                eventId: created.id,
+                label: q.label,
+                required: q.required,
+                order: q.order,
+              },
+            }),
+          ),
+        );
+      }
     });
   } catch (error) {
     console.error("Error creating event:", error);
@@ -110,11 +143,30 @@ export async function updateEventAction(
   };
 
   try {
-    await prisma.event.update({
-      where: {
-        id: eventId,
-      },
-      data: eventData,
+    const questions = parseQuestionsFromForm(formData);
+    await prisma.$transaction(async (tx) => {
+      await tx.event.update({
+        where: { id: eventId },
+        data: eventData,
+      });
+
+      // replace existing questions with submitted set
+      await tx.eventQuestion.deleteMany({ where: { eventId } });
+
+      if (questions.length) {
+        await Promise.all(
+          questions.map((q) =>
+            tx.eventQuestion.create({
+              data: {
+                eventId,
+                label: q.label,
+                required: q.required,
+                order: q.order,
+              },
+            }),
+          ),
+        );
+      }
     });
   } catch (error) {
     console.error("Error updating event:", error);

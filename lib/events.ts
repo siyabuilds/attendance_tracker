@@ -53,7 +53,8 @@ export type EventFormValues = z.infer<typeof eventSchema>;
 
 export type EventFormState =
   | {
-      errors?: Partial<Record<keyof EventFormValues, string[]>>;
+      // allow arbitrary field keys for dynamic question errors (e.g. "question-label-0")
+      errors?: Partial<Record<string, string[]>>;
       formError?: string;
     }
   | undefined;
