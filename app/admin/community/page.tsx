@@ -155,7 +155,7 @@ export default async function CommunityLeaderboardPage() {
           <div className="grid gap-4 px-6 py-5 sm:grid-cols-2 xl:grid-cols-4">
             <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 transition-all hover:bg-slate-50 hover:shadow-xs">
               <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                People tracked
+                Community members
               </p>
               <p className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
                 {totalPeople}
@@ -244,7 +244,10 @@ export default async function CommunityLeaderboardPage() {
                       .toUpperCase();
 
                     return (
-                      <tr key={entry.email} className="hover:bg-slate-50/40 transition-colors duration-150">
+                      <tr
+                        key={entry.email}
+                        className="hover:bg-slate-50/40 transition-colors duration-150"
+                      >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-3">
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-orange-100 bg-orange-50/60 text-xs font-bold text-orange-600 shadow-xs">
