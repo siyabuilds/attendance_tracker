@@ -26,6 +26,7 @@ model Event {
   token       String       @unique
   createdAt   DateTime     @default(now())
   attendances Attendance[]
+  questions   EventQuestion[]
 
   @@map("events")
 }
@@ -38,8 +39,38 @@ model Attendance {
   email     String
   reason    String?
   createdAt DateTime @default(now())
+  answers   AttendanceAnswer[]
 
   @@unique([eventId, email])
 
   @@map("attendance")
+}
+
+model EventQuestion {
+  id        String             @id @default(uuid())
+  eventId   String
+  event     Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  label     String
+  required  Boolean            @default(false)
+  order     Int
+  answers   AttendanceAnswer[]
+
+  @@unique([eventId, order])
+  @@index([eventId])
+
+  @@map("event_questions")
+}
+
+model AttendanceAnswer {
+  id           String         @id @default(uuid())
+  attendanceId String
+  questionId   String
+  attendance   Attendance     @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  question     EventQuestion   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer       String
+
+  @@unique([attendanceId, questionId])
+  @@index([questionId])
+
+  @@map("attendance_answers")
 }
