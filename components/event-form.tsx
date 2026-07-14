@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import {
   AlertCircle,
+  ArrowDown,
+  ArrowUp,
   CalendarRange,
   Clock3,
   FileText,
@@ -23,9 +25,16 @@ import {
   type EventRecordForForm,
 } from "@/lib/events";
 
+type QuestionItem = {
+  id?: string;
+  label: string;
+  required: boolean;
+  order: number;
+};
+
 type EventFormProps = {
   mode: "create" | "edit";
-  event?: EventRecordForForm;
+  event?: EventRecordForForm & { questions?: QuestionItem[] };
 };
 
 const initialState: EventFormState = undefined;
@@ -43,7 +52,7 @@ function FieldError({
 
   return (
     <p
-      className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-red-600"
+      className="mt-1.5 flex items-center gap-1.5 text-xs font-medium text-red-700"
       id={`${fieldName}-error`}
       role="alert"
     >
@@ -89,31 +98,19 @@ export function EventForm({ mode, event }: EventFormProps) {
   );
   const values: EventFormValues = eventToFormValues(event);
 
-  type QuestionItem = {
-    id?: string;
-    label: string;
-    required: boolean;
-    order: number;
-  };
-
-  const initialQuestions: QuestionItem[] = (event as any)?.questions
-    ? (event as any).questions
+  const initialQuestions: QuestionItem[] = event?.questions
+    ? event.questions
         .slice()
-        .sort((a: any, b: any) => a.order - b.order)
-        .map((q: any, i: number) => ({
-          id: q.id,
-          label: q.label,
-          required: !!q.required,
-          order: q.order ?? i,
+        .sort((left, right) => left.order - right.order)
+        .map((question, index) => ({
+          id: question.id,
+          label: question.label,
+          required: question.required,
+          order: question.order ?? index,
         }))
     : [];
 
   const [questions, setQuestions] = useState<QuestionItem[]>(initialQuestions);
-
-  useEffect(() => {
-    setQuestions(initialQuestions);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event?.id]);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -123,14 +120,14 @@ export function EventForm({ mode, event }: EventFormProps) {
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-2">
           <label
-            className="block text-xs font-bold uppercase tracking-wider text-slate-500"
+            className="block text-xs font-semibold text-slate-600"
             htmlFor="title"
           >
             Title
           </label>
           <InputShell icon={<PencilLine className="h-4 w-4" />}>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               id="title"
               name="title"
               type="text"
@@ -145,14 +142,14 @@ export function EventForm({ mode, event }: EventFormProps) {
 
         <div className="space-y-2">
           <label
-            className="block text-xs font-bold uppercase tracking-wider text-slate-500"
+            className="block text-xs font-semibold text-slate-600"
             htmlFor="venue"
           >
             Venue
           </label>
           <InputShell icon={<MapPin className="h-4 w-4" />}>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               id="venue"
               name="venue"
               type="text"
@@ -167,14 +164,14 @@ export function EventForm({ mode, event }: EventFormProps) {
 
         <div className="space-y-2">
           <label
-            className="block text-xs font-bold uppercase tracking-wider text-slate-500"
+            className="block text-xs font-semibold text-slate-600"
             htmlFor="rewardPoints"
           >
             Reward Points
           </label>
           <InputShell icon={<Trophy className="h-4 w-4" />}>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               id="rewardPoints"
               name="rewardPoints"
               type="number"
@@ -197,14 +194,14 @@ export function EventForm({ mode, event }: EventFormProps) {
 
         <div className="space-y-2">
           <label
-            className="block text-xs font-bold uppercase tracking-wider text-slate-500"
+            className="block text-xs font-semibold text-slate-600"
             htmlFor="startsAt"
           >
             Starts At
           </label>
           <InputShell icon={<CalendarRange className="h-4 w-4" />}>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               id="startsAt"
               name="startsAt"
               type="datetime-local"
@@ -221,14 +218,14 @@ export function EventForm({ mode, event }: EventFormProps) {
 
         <div className="space-y-2">
           <label
-            className="block text-xs font-bold uppercase tracking-wider text-slate-500"
+            className="block text-xs font-semibold text-slate-600"
             htmlFor="endsAt"
           >
             Ends At
           </label>
           <InputShell icon={<Clock3 className="h-4 w-4" />}>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               id="endsAt"
               name="endsAt"
               type="datetime-local"
@@ -246,7 +243,7 @@ export function EventForm({ mode, event }: EventFormProps) {
 
       <div className="space-y-2">
         <label
-          className="block text-xs font-bold uppercase tracking-wider text-slate-500"
+          className="block text-xs font-semibold text-slate-600"
           htmlFor="description"
         >
           Description
@@ -256,7 +253,7 @@ export function EventForm({ mode, event }: EventFormProps) {
             <FileText className="h-4 w-4" />
           </div>
           <textarea
-            className="min-h-32 w-full resize-y rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+            className="min-h-32 w-full resize-y rounded border border-slate-300 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
             id="description"
             name="description"
             defaultValue={values.description}
@@ -276,8 +273,8 @@ export function EventForm({ mode, event }: EventFormProps) {
 
       {/* Additional Questions */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-semibold text-slate-700">
             Additional Questions
           </p>
           <button
@@ -288,14 +285,14 @@ export function EventForm({ mode, event }: EventFormProps) {
                 { label: "", required: false, order: q.length },
               ]);
             }}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs"
+            className="inline-flex h-9 items-center gap-2 rounded border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50"
           >
             <Plus className="h-4 w-4" />
             Add question
           </button>
         </div>
 
-        <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-xs space-y-3">
+        <div className="space-y-3 rounded-md border border-slate-200 bg-slate-50/40 p-4">
           {questions.length === 0 ? (
             <p className="text-sm text-slate-400">
               No additional questions configured.
@@ -304,16 +301,16 @@ export function EventForm({ mode, event }: EventFormProps) {
             questions.map((q, idx) => (
               <div
                 key={q.id ?? `new-${idx}`}
-                className="space-y-2 border-b border-slate-100 pb-3"
+                className="space-y-3 border-b border-slate-200 pb-4 last:border-b-0 last:pb-0"
               >
                 <div className="flex items-start gap-3">
                   <div className="flex-1">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <label className="block text-xs font-semibold text-slate-600">
                       Question {idx + 1}
                     </label>
                     <input
                       name={`question-label-${idx}`}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+                      className="mt-1.5 h-10 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
                       placeholder="Question label"
                       value={q.label}
                       onChange={(e) => {
@@ -353,7 +350,7 @@ export function EventForm({ mode, event }: EventFormProps) {
                             ),
                           );
                         }}
-                        className="h-4 w-4"
+                        className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                       />
                     </div>
 
@@ -373,23 +370,10 @@ export function EventForm({ mode, event }: EventFormProps) {
                             }));
                           });
                         }}
-                        className="rounded-md p-2 text-slate-500 hover:bg-slate-50"
+                        className="rounded p-2 text-slate-500 transition hover:bg-slate-200 hover:text-slate-700"
                         aria-label={`Move question ${idx + 1} up`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 15l7-7 7 7"
-                          />
-                        </svg>
+                        <ArrowUp className="h-4 w-4" />
                       </button>
                       <button
                         type="button"
@@ -406,23 +390,10 @@ export function EventForm({ mode, event }: EventFormProps) {
                             }));
                           });
                         }}
-                        className="rounded-md p-2 text-slate-500 hover:bg-slate-50"
+                        className="rounded p-2 text-slate-500 transition hover:bg-slate-200 hover:text-slate-700"
                         aria-label={`Move question ${idx + 1} down`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
+                        <ArrowDown className="h-4 w-4" />
                       </button>
 
                       <button
@@ -434,7 +405,7 @@ export function EventForm({ mode, event }: EventFormProps) {
                               .map((it, i) => ({ ...it, order: i })),
                           );
                         }}
-                        className="rounded-md p-2 text-red-600 hover:bg-red-50"
+                        className="rounded p-2 text-red-700 transition hover:bg-red-50"
                         aria-label={`Remove question ${idx + 1}`}
                       >
                         <svg
@@ -480,14 +451,14 @@ export function EventForm({ mode, event }: EventFormProps) {
       </div>
 
       {state?.formError ? (
-        <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50/50 px-4 py-3.5 text-xs font-bold text-red-700 shadow-xs">
+        <div className="flex items-center gap-2 rounded border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{state.formError}</span>
         </div>
       ) : null}
 
       <button
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-4.5 py-3 text-sm font-semibold text-white shadow-md shadow-orange-600/15 transition-all hover:bg-orange-500 hover:shadow-lg hover:shadow-orange-600/25 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
         type="submit"
         disabled={pending}
       >

@@ -58,7 +58,7 @@ function getFieldErrorId(fieldName: string, messages?: string[]) {
 
 function Label({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+    <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
       <span className="text-orange-600">{icon}</span>
       <span>{children}</span>
     </div>
@@ -76,14 +76,14 @@ function SuccessScreen({
   }).format(new Date(checkedInAt));
 
   return (
-    <div className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-6 shadow-xs">
+    <div className="rounded-md border border-emerald-200 bg-emerald-50/60 p-6 shadow-sm">
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-100/70 text-emerald-700 shadow-xs border border-emerald-200/50">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-emerald-200 bg-emerald-100/70 text-emerald-700 shadow-xs">
           <CheckCircle2 className="h-6 w-6" />
         </div>
 
         <div className="space-y-2.5">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-750">
+          <p className="text-xs font-semibold text-emerald-800">
             You are checked in
           </p>
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
@@ -93,7 +93,7 @@ function SuccessScreen({
           <p className="text-sm text-slate-600 leading-relaxed font-medium">
             Your attendance was recorded at {timeLabel}.
           </p>
-          <p className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-100 bg-white px-3.5 py-2 text-xs font-bold text-emerald-700 shadow-xs">
+          <p className="inline-flex items-center gap-1.5 rounded border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-emerald-700 shadow-xs">
             <Sparkles className="h-4 w-4" />
             Enjoy the event.
           </p>
@@ -124,9 +124,9 @@ export function AttendanceForm({
     <form className="space-y-5" action={formAction}>
       <input type="hidden" name="token" value={token} />
 
-      <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm space-y-4">
+      <div className="space-y-4 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-orange-600">
+          <p className="text-xs font-semibold text-orange-700">
             Attendance details
           </p>
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
@@ -135,29 +135,29 @@ export function AttendanceForm({
         </div>
 
         <div className="grid gap-3 text-sm text-slate-500 sm:grid-cols-2">
-          <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/30 px-3.5 py-2.5 font-medium shadow-xs">
+          <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 font-medium shadow-xs">
             <MapPin className="h-4 w-4 text-orange-600 shrink-0" />
             <span className="truncate">{venue}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/30 px-3.5 py-2.5 font-medium shadow-xs">
+          <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 font-medium shadow-xs">
             <CalendarDays className="h-4 w-4 text-orange-600 shrink-0" />
             <span>{startsAtLabel}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/30 px-3.5 py-2.5 font-medium shadow-xs sm:col-span-2">
+          <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 font-medium shadow-xs sm:col-span-2">
             <Clock3 className="h-4 w-4 text-orange-600 shrink-0" />
             <span>Check-in closes at {endsAtLabel}</span>
           </div>
         </div>
       </div>
 
-      <div className="space-y-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div className="space-y-4 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
         <div className="space-y-4">
           <div className="space-y-2">
             <Label icon={<UserRound className="h-3.5 w-3.5" />}>
               Full Name
             </Label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="h-11 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               name="name"
               type="text"
               placeholder="Samson Mokoena"
@@ -171,7 +171,7 @@ export function AttendanceForm({
           <div className="space-y-2">
             <Label icon={<Mail className="h-3.5 w-3.5" />}>Email Address</Label>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="h-11 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               name="email"
               type="email"
               placeholder="samson@example.com"
@@ -187,7 +187,7 @@ export function AttendanceForm({
               Reason for attending
             </Label>
             <textarea
-              className="min-h-28 w-full resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              className="min-h-28 w-full resize-y rounded border border-slate-300 bg-white px-3 py-3 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               name="reason"
               placeholder="Optional notes, purpose, or session you're attending"
               aria-invalid={Boolean(state?.errors?.reason)}
@@ -201,7 +201,7 @@ export function AttendanceForm({
 
           {questions.length > 0 && (
             <div className="space-y-3">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <p className="text-sm font-semibold text-slate-700">
                 Additional Questions
               </p>
               <div className="space-y-4">
@@ -212,7 +212,7 @@ export function AttendanceForm({
                     </Label>
                     <input
                       name={`answer-${q.id}`}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+                      className="h-11 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
                       aria-invalid={Boolean(state?.errors?.[`answer-${q.id}`])}
                       aria-describedby={getFieldErrorId(
                         `answer-${q.id}`,
@@ -232,14 +232,14 @@ export function AttendanceForm({
         </div>
 
         {state?.formError ? (
-          <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50/50 px-4 py-3.5 text-xs font-bold text-red-700 shadow-xs">
+          <div className="flex items-center gap-2 rounded border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{state.formError}</span>
           </div>
         ) : null}
 
         <button
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-4.5 py-3 text-sm font-semibold text-white shadow-md shadow-orange-600/15 transition-all hover:bg-orange-500 hover:shadow-lg hover:shadow-orange-600/25 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
           type="submit"
           disabled={pending}
         >

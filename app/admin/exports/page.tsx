@@ -22,7 +22,7 @@ export default async function ExportsPage() {
   return (
     <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-7xl space-y-6">
-        <section className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-xs">
+        <section className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-6 border-b border-slate-100 bg-gradient-to-br from-slate-50 via-white to-orange-50/20 px-6 py-7 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-2">
               <Link
@@ -32,9 +32,7 @@ export default async function ExportsPage() {
                 <ChevronLeft className="h-4 w-4" />
                 Back to dashboard
               </Link>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-orange-600">
-                Exports
-              </p>
+              <p className="text-xs font-semibold text-orange-700">Exports</p>
               <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
                 CSV exports
               </h1>
@@ -43,16 +41,16 @@ export default async function ExportsPage() {
               </p>
             </div>
 
-            <div className="inline-flex items-center gap-2 rounded-xl border border-orange-100 bg-orange-50/50 px-4 py-2.5 text-sm font-semibold text-orange-700 shadow-xs">
+            <div className="inline-flex items-center gap-2 rounded border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
               <Users className="h-4 w-4" />
               Admin exports
             </div>
           </div>
 
           <div className="space-y-6 px-6 py-6">
-            <section className="rounded-lg border border-slate-100 bg-white p-5">
-              <div className="flex items-start justify-between">
-                <div>
+            <section className="rounded-md border border-slate-200 bg-white p-5">
+              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <div className="space-y-1">
                   <h2 className="text-lg font-bold tracking-tight text-slate-900">
                     Community Leaderboard
                   </h2>
@@ -63,7 +61,7 @@ export default async function ExportsPage() {
                 <div>
                   <a
                     href="/admin/exports/leaderboard"
-                    className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4.5 py-2.5 text-sm font-semibold text-white shadow-md shadow-orange-600/10 hover:bg-orange-500"
+                    className="inline-flex h-10 items-center gap-2 rounded bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md"
                   >
                     <Download className="h-4 w-4" />
                     Export Leaderboard
@@ -72,7 +70,7 @@ export default async function ExportsPage() {
               </div>
             </section>
 
-            <section className="rounded-lg border border-slate-100 bg-white p-5">
+            <section className="rounded-md border border-slate-200 bg-white p-5">
               <div className="mb-4">
                 <h2 className="text-lg font-bold tracking-tight text-slate-900">
                   Event Attendance
@@ -87,7 +85,7 @@ export default async function ExportsPage() {
                 {events.map((event) => (
                   <div
                     key={event.id}
-                    className="flex items-center justify-between rounded-lg border border-slate-100 p-4"
+                    className="flex flex-col items-start justify-between gap-3 rounded border border-slate-200 p-4 sm:flex-row sm:items-center"
                   >
                     <div>
                       <p className="font-semibold text-slate-900">
@@ -101,7 +99,7 @@ export default async function ExportsPage() {
                     <div>
                       <a
                         href={`/admin/exports/event/${event.id}`}
-                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                        className="inline-flex h-9 items-center gap-2 rounded border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-orange-700"
                       >
                         <Download className="h-4 w-4" />
                         Export

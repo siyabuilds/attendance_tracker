@@ -42,9 +42,9 @@ function NoticeCard({
   icon: ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+    <div className="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-650 border border-orange-100/50 shadow-xs">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-orange-200 bg-orange-50 text-orange-700 shadow-xs">
           {icon}
         </div>
         <div className="space-y-1">
@@ -104,12 +104,10 @@ export default async function AttendPage({ params }: AttendPageProps) {
   return (
     <main className="relative flex-1 overflow-hidden px-4 py-8 sm:px-6 lg:px-8 bg-slate-50/20">
       <div className="absolute inset-x-0 top-0 -z-10 h-72 bg-linear-to-b from-orange-50/60 via-orange-50/20 to-transparent" />
-      <div className="absolute -right-24 top-16 -z-10 h-64 w-64 rounded-full bg-orange-100/40 blur-3xl" />
-      <div className="absolute -left-24 bottom-0 -z-10 h-64 w-64 rounded-full bg-amber-100/40 blur-3xl" />
 
       <div className="mx-auto grid w-full max-w-5xl gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-        <section className="space-y-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
-          <div className="inline-flex items-center gap-2 rounded-xl border border-orange-100 bg-orange-50/50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-orange-700 shadow-xs">
+        <section className="space-y-4 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded border border-orange-200 bg-orange-50 px-3 py-1.5 text-xs font-semibold text-orange-700">
             <Sparkles className="h-3.5 w-3.5" />
             Public check-in
           </div>
@@ -126,15 +124,15 @@ export default async function AttendPage({ params }: AttendPageProps) {
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/30 px-3.5 py-2.5 text-sm text-slate-600 shadow-xs">
+            <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-sm text-slate-600 shadow-xs">
               <MapPin className="h-4 w-4 text-orange-600 shrink-0" />
               <span className="font-medium truncate">{event.venue}</span>
             </div>
-            <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/30 px-3.5 py-2.5 text-sm text-slate-600 shadow-xs">
+            <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-sm text-slate-600 shadow-xs">
               <CalendarDays className="h-4 w-4 text-orange-600 shrink-0" />
               <span className="font-medium">{formatDate(event.startsAt)}</span>
             </div>
-            <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/30 px-3.5 py-2.5 text-sm text-slate-600 shadow-xs sm:col-span-2">
+            <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-sm text-slate-600 shadow-xs sm:col-span-2">
               <Clock3 className="h-4 w-4 text-orange-600 shrink-0" />
               <span className="font-medium">
                 Check-in closes at {formatDateTime(event.endsAt)}
@@ -154,8 +152,7 @@ export default async function AttendPage({ params }: AttendPageProps) {
             venue={event.venue}
             startsAtLabel={formatDate(event.startsAt)}
             endsAtLabel={formatDateTime(event.endsAt)}
-            // @ts-ignore - pass questions for rendering
-            questions={(eventWithQuestions as any)?.questions ?? []}
+            questions={eventWithQuestions?.questions ?? []}
           />
         </section>
       </div>

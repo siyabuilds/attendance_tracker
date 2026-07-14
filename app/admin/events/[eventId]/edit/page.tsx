@@ -38,9 +38,7 @@ export default async function EventEditPage({ params }: EventEditPageProps) {
             Back to dashboard
           </Link>
           <div className="space-y-1">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-orange-600">
-              Edit Event
-            </p>
+            <p className="text-xs font-semibold text-orange-700">Edit event</p>
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
               Update event details
             </h1>
@@ -50,7 +48,7 @@ export default async function EventEditPage({ params }: EventEditPageProps) {
           </div>
         </div>
 
-        <section className="rounded-2xl border border-slate-100 bg-white p-6 shadow-xs sm:p-8">
+        <section className="rounded-md border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <EventForm
             mode="edit"
             event={{
@@ -61,9 +59,7 @@ export default async function EventEditPage({ params }: EventEditPageProps) {
               rewardPoints: event.rewardPoints,
               startsAt: event.startsAt,
               endsAt: event.endsAt,
-              // include questions if present
-              // @ts-ignore - extend event prop with questions for edit mode
-              questions: (eventWithQuestions as any)?.questions ?? [],
+              questions: eventWithQuestions?.questions ?? [],
             }}
           />
         </section>
