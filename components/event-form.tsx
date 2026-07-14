@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import {
   AlertCircle,
   CalendarRange,
@@ -88,6 +88,32 @@ export function EventForm({ mode, event }: EventFormProps) {
     initialState,
   );
   const values: EventFormValues = eventToFormValues(event);
+
+  type QuestionItem = {
+    id?: string;
+    label: string;
+    required: boolean;
+    order: number;
+  };
+
+  const initialQuestions: QuestionItem[] = (event as any)?.questions
+    ? (event as any).questions
+        .slice()
+        .sort((a: any, b: any) => a.order - b.order)
+        .map((q: any, i: number) => ({
+          id: q.id,
+          label: q.label,
+          required: !!q.required,
+          order: q.order ?? i,
+        }))
+    : [];
+
+  const [questions, setQuestions] = useState<QuestionItem[]>(initialQuestions);
+
+  useEffect(() => {
+    setQuestions(initialQuestions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event?.id]);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -246,6 +272,211 @@ export function EventForm({ mode, event }: EventFormProps) {
           fieldName="description"
           messages={state?.errors?.description}
         />
+      </div>
+
+      {/* Additional Questions */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+            Additional Questions
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setQuestions((q) => [
+                ...q,
+                { label: "", required: false, order: q.length },
+              ]);
+            }}
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs"
+          >
+            <Plus className="h-4 w-4" />
+            Add question
+          </button>
+        </div>
+
+        <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-xs space-y-3">
+          {questions.length === 0 ? (
+            <p className="text-sm text-slate-400">
+              No additional questions configured.
+            </p>
+          ) : (
+            questions.map((q, idx) => (
+              <div
+                key={q.id ?? `new-${idx}`}
+                className="space-y-2 border-b border-slate-100 pb-3"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                      Question {idx + 1}
+                    </label>
+                    <input
+                      name={`question-label-${idx}`}
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+                      placeholder="Question label"
+                      value={q.label}
+                      onChange={(e) => {
+                        const label = e.target.value;
+                        setQuestions((prev) =>
+                          prev.map((p, i) => (i === idx ? { ...p, label } : p)),
+                        );
+                      }}
+                      aria-invalid={Boolean(
+                        state?.errors?.[`question-label-${idx}`],
+                      )}
+                      aria-describedby={getFieldErrorId(
+                        `question-label-${idx}`,
+                        state?.errors?.[`question-label-${idx}`],
+                      )}
+                    />
+                    <FieldError
+                      fieldName={`question-label-${idx}`}
+                      messages={state?.errors?.[`question-label-${idx}`]}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2 items-end">
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs font-semibold text-slate-500">
+                        Required
+                      </label>
+                      <input
+                        type="checkbox"
+                        name={`question-required-${idx}`}
+                        checked={q.required}
+                        onChange={(e) => {
+                          const required = e.target.checked;
+                          setQuestions((prev) =>
+                            prev.map((p, i) =>
+                              i === idx ? { ...p, required } : p,
+                            ),
+                          );
+                        }}
+                        className="h-4 w-4"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (idx === 0) return;
+                          setQuestions((prev) => {
+                            const next = prev.slice();
+                            const tmp = next[idx - 1];
+                            next[idx - 1] = { ...next[idx], order: idx - 1 };
+                            next[idx] = { ...tmp, order: idx };
+                            return next.map((item, i) => ({
+                              ...item,
+                              order: i,
+                            }));
+                          });
+                        }}
+                        className="rounded-md p-2 text-slate-500 hover:bg-slate-50"
+                        aria-label={`Move question ${idx + 1} up`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 15l7-7 7 7"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (idx === questions.length - 1) return;
+                          setQuestions((prev) => {
+                            const next = prev.slice();
+                            const tmp = next[idx + 1];
+                            next[idx + 1] = { ...next[idx], order: idx + 1 };
+                            next[idx] = { ...tmp, order: idx };
+                            return next.map((item, i) => ({
+                              ...item,
+                              order: i,
+                            }));
+                          });
+                        }}
+                        className="rounded-md p-2 text-slate-500 hover:bg-slate-50"
+                        aria-label={`Move question ${idx + 1} down`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setQuestions((prev) =>
+                            prev
+                              .filter((_, i) => i !== idx)
+                              .map((it, i) => ({ ...it, order: i })),
+                          );
+                        }}
+                        className="rounded-md p-2 text-red-600 hover:bg-red-50"
+                        aria-label={`Remove question ${idx + 1}`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+
+          <input
+            type="hidden"
+            name="questions-count"
+            value={questions.length}
+          />
+          {questions.map((q, idx) => (
+            <div key={`hidden-${idx}`} className="hidden">
+              <input name={`question-label-${idx}`} value={q.label} readOnly />
+              {q.required ? (
+                <input
+                  name={`question-required-${idx}`}
+                  value="true"
+                  readOnly
+                />
+              ) : null}
+            </div>
+          ))}
+        </div>
       </div>
 
       {state?.formError ? (

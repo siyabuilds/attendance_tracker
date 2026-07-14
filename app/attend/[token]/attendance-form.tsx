@@ -24,6 +24,7 @@ type AttendanceFormProps = {
   venue: string;
   startsAtLabel: string;
   endsAtLabel: string;
+  questions?: { id: string; label: string; required: boolean }[];
 };
 
 const initialState: AttendanceFormState = undefined;
@@ -108,6 +109,7 @@ export function AttendanceForm({
   venue,
   startsAtLabel,
   endsAtLabel,
+  questions = [],
 }: AttendanceFormProps) {
   const [state, formAction, pending] = useActionState(
     createAttendanceAction,
@@ -196,6 +198,37 @@ export function AttendanceForm({
             />
             <FieldError fieldName="reason" messages={state?.errors?.reason} />
           </div>
+
+          {questions.length > 0 && (
+            <div className="space-y-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Additional Questions
+              </p>
+              <div className="space-y-4">
+                {questions.map((q) => (
+                  <div key={q.id} className="space-y-2">
+                    <Label icon={<MessageSquareText className="h-3.5 w-3.5" />}>
+                      {q.label}
+                    </Label>
+                    <input
+                      name={`answer-${q.id}`}
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+                      aria-invalid={Boolean(state?.errors?.[`answer-${q.id}`])}
+                      aria-describedby={getFieldErrorId(
+                        `answer-${q.id}`,
+                        state?.errors?.[`answer-${q.id}`],
+                      )}
+                      required={q.required}
+                    />
+                    <FieldError
+                      fieldName={`answer-${q.id}`}
+                      messages={state?.errors?.[`answer-${q.id}`]}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {state?.formError ? (

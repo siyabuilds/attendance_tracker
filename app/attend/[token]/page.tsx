@@ -65,6 +65,11 @@ export default async function AttendPage({ params }: AttendPageProps) {
       token,
     },
   });
+  // load questions for the attendance form
+  const eventWithQuestions = await prisma.event.findUnique({
+    where: { token },
+    include: { questions: { orderBy: { order: "asc" } } },
+  });
 
   if (!event) {
     return (
@@ -149,6 +154,8 @@ export default async function AttendPage({ params }: AttendPageProps) {
             venue={event.venue}
             startsAtLabel={formatDate(event.startsAt)}
             endsAtLabel={formatDateTime(event.endsAt)}
+            // @ts-ignore - pass questions for rendering
+            questions={(eventWithQuestions as any)?.questions ?? []}
           />
         </section>
       </div>
