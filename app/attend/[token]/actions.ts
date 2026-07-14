@@ -31,9 +31,8 @@ export async function createAttendanceAction(
   }
 
   const event = await prisma.event.findUnique({
-    where: {
-      token,
-    },
+    where: { token },
+    include: { questions: { orderBy: { order: "asc" } } },
   });
 
   if (!event) {
@@ -67,6 +66,25 @@ export async function createAttendanceAction(
     };
   }
 
+  // validate required question answers
+  const questionErrors: Record<string, string[]> = {};
+  const answersToSave: { questionId: string; answer: string }[] = [];
+  for (const q of event.questions ?? []) {
+    const value = formData.get(`answer-${q.id}`)?.toString() ?? "";
+    if (q.required && value.trim().length === 0) {
+      questionErrors[`answer-${q.id}`] = ["This question is required."];
+    } else if (value.trim().length > 0) {
+      answersToSave.push({ questionId: q.id, answer: value.trim() });
+    }
+  }
+
+  if (Object.keys(questionErrors).length > 0) {
+    return {
+      errors: questionErrors,
+      formError: "Check the highlighted fields and try again.",
+    };
+  }
+
   try {
     await prisma.attendance.create({
       data: {
@@ -74,6 +92,14 @@ export async function createAttendanceAction(
         name,
         email,
         reason: attendanceReason,
+        answers: answersToSave.length
+          ? {
+              create: answersToSave.map((a) => ({
+                questionId: a.questionId,
+                answer: a.answer,
+              })),
+            }
+          : undefined,
       },
     });
   } catch (error) {
