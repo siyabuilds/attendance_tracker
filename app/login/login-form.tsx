@@ -21,7 +21,7 @@ function FieldError({
 
   return (
     <p
-      className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-red-600"
+      className="mt-1.5 flex items-center gap-1.5 text-xs font-medium text-red-700"
       id={`${fieldName}-error`}
       role="alert"
     >
@@ -45,7 +45,7 @@ export function LoginForm() {
     <form action={formAction} className="space-y-6">
       <div className="space-y-2">
         <label
-          className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block"
+          className="block text-xs font-semibold text-slate-600"
           htmlFor="email"
         >
           Email Address
@@ -55,7 +55,7 @@ export function LoginForm() {
             <Mail className="h-4 w-4 text-slate-400" />
           </div>
           <input
-            className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+            className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
             id="email"
             name="email"
             type="email"
@@ -70,7 +70,7 @@ export function LoginForm() {
 
       <div className="space-y-2">
         <label
-          className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block"
+          className="block text-xs font-semibold text-slate-600"
           htmlFor="password"
         >
           Password
@@ -80,7 +80,7 @@ export function LoginForm() {
             <Lock className="h-4 w-4 text-slate-400" />
           </div>
           <input
-            className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm text-slate-800 shadow-xs outline-none transition-all placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+            className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
             id="password"
             name="password"
             type="password"
@@ -97,14 +97,14 @@ export function LoginForm() {
       </div>
 
       {state?.formError ? (
-        <div className="rounded-xl border border-red-200 bg-red-50/50 p-4 text-xs font-bold text-red-700 flex items-center gap-2 shadow-xs">
+        <div className="flex items-center gap-2 rounded border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           <AlertCircle className="h-4 w-4 shrink-0 text-red-650" />
           <span>{state.formError}</span>
         </div>
       ) : null}
 
       <button
-        className="inline-flex w-full items-center justify-center rounded-xl bg-orange-600 px-4.5 py-3 text-sm font-semibold text-white shadow-md shadow-orange-600/15 transition-all hover:bg-orange-500 hover:shadow-lg hover:shadow-orange-600/25 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:pointer-events-none cursor-pointer"
+        className="inline-flex h-11 w-full items-center justify-center rounded bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md active:scale-[0.99] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-60"
         type="submit"
         disabled={pending}
       >
