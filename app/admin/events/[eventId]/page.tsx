@@ -96,14 +96,14 @@ export default async function EventDetailsPage({
   };
 
   const status = getStatus(event.startsAt, event.endsAt);
-  const questions = (eventFull as any)?.questions ?? [];
+  const questions = eventFull.questions;
 
   return (
     <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-7xl space-y-6">
         {/* Navigation & Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-1">
+          <div className="min-w-0 space-y-1">
             <Link
               className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 transition-colors hover:text-orange-600 mb-1"
               href="/admin"
@@ -126,9 +126,9 @@ export default async function EventDetailsPage({
             </p>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Link
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-orange-600 shadow-xs cursor-pointer"
+              className="inline-flex h-10 items-center gap-1.5 rounded border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-orange-700"
               href={`/admin/events/${event.id}/edit`}
             >
               <Edit3 className="h-4 w-4" />
@@ -138,7 +138,7 @@ export default async function EventDetailsPage({
             <form action={deleteEventAction}>
               <input type="hidden" name="eventId" value={event.id} />
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50/50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100 shadow-xs cursor-pointer"
+                className="inline-flex h-10 items-center gap-1.5 rounded border border-red-200 bg-red-50 px-4 text-sm font-semibold text-red-700 shadow-xs transition hover:border-red-300 hover:bg-red-100"
                 type="submit"
               >
                 <Trash2 className="h-4 w-4" />
@@ -151,9 +151,9 @@ export default async function EventDetailsPage({
         {/* Content Layout */}
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Left Column: Details & QR Code */}
-          <div className="space-y-6 lg:col-span-1">
+          <div className="min-w-0 space-y-6 lg:col-span-1">
             {/* Event Info Card */}
-            <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-xs space-y-4">
+            <div className="space-y-4 rounded-md border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-lg font-bold tracking-tight text-slate-900 border-b border-slate-100 pb-2">
                 Event details
               </h2>
@@ -225,7 +225,7 @@ export default async function EventDetailsPage({
                     Additional Questions
                   </p>
                   <div className="space-y-2">
-                    {questions.map((q: any) => (
+                    {questions.map((q) => (
                       <div
                         key={q.id}
                         className="flex items-center justify-between gap-3"
@@ -255,15 +255,15 @@ export default async function EventDetailsPage({
             </div>
 
             {/* QR Code & Attendance Link Card */}
-            <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-xs space-y-5 flex flex-col items-center text-center">
+            <div className="flex flex-col items-center space-y-5 rounded-md border border-slate-200 bg-white p-6 text-center shadow-sm">
               <h2 className="text-lg font-bold tracking-tight text-slate-900 border-b border-slate-100 pb-2 w-full text-left flex items-center gap-1.5">
                 <QrCode className="h-5 w-5 text-orange-600" />
                 Attendance token
               </h2>
 
-              <div className="bg-orange-50/30 border border-orange-100/60 rounded-2xl p-5 w-full flex flex-col items-center justify-center gap-4">
+              <div className="flex w-full flex-col items-center justify-center gap-4 rounded-md border border-orange-200 bg-orange-50/40 p-5">
                 {/* QR Code Display */}
-                <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs">
+                <div className="rounded border border-slate-200 bg-white p-3 shadow-xs">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(checkInUrl)}`}
                     alt="Attendance Check-In QR"
@@ -278,7 +278,7 @@ export default async function EventDetailsPage({
                   <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1.5">
                     Token Value
                   </span>
-                  <code className="px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono text-slate-800 font-bold inline-block select-all shadow-xs">
+                  <code className="inline-block select-all rounded border border-slate-300 bg-white px-3 py-2 font-mono text-xs font-bold text-slate-800 shadow-xs">
                     {event.token}
                   </code>
                 </div>
@@ -307,7 +307,7 @@ export default async function EventDetailsPage({
                 <input type="hidden" name="eventId" value={event.id} />
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-orange-600 transition shadow-xs cursor-pointer"
+                  className="inline-flex h-10 w-full items-center justify-center gap-2 rounded border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-orange-700"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />
                   Regenerate token
@@ -321,8 +321,8 @@ export default async function EventDetailsPage({
           </div>
 
           {/* Right Column: Attendance List */}
-          <div className="space-y-6 lg:col-span-2">
-            <div className="rounded-2xl border border-slate-100 bg-white shadow-xs min-h-100 flex flex-col overflow-hidden">
+          <div className="min-w-0 space-y-6 lg:col-span-2">
+            <div className="flex min-h-100 flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
               <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-2">
@@ -337,7 +337,7 @@ export default async function EventDetailsPage({
 
               {event.attendances.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-slate-50/20">
-                  <div className="h-12 w-12 rounded-xl bg-orange-50 border border-orange-100/50 flex items-center justify-center text-orange-600 mb-3 shadow-xs">
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-md border border-orange-200 bg-orange-50 text-orange-600 shadow-xs">
                     <Users className="h-6 w-6" />
                   </div>
                   <h3 className="text-base font-bold text-slate-900">
@@ -352,7 +352,7 @@ export default async function EventDetailsPage({
                 <div className="overflow-x-auto flex-1">
                   <table className="w-full text-left text-sm text-slate-850 border-collapse">
                     <thead>
-                      <tr className="border-b border-slate-100 bg-slate-50/50 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      <tr className="border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-600">
                         <th className="px-6 py-4">Attendee</th>
                         <th className="px-6 py-4">Email</th>
                         <th className="px-6 py-4">Checked-in Time</th>
@@ -372,11 +372,11 @@ export default async function EventDetailsPage({
                         return (
                           <tr
                             key={attendee.id}
-                            className="hover:bg-slate-50/40 transition-colors duration-150"
+                            className="transition-colors hover:bg-orange-50/30"
                           >
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center gap-3">
-                                <div className="h-8 w-8 rounded-xl bg-orange-50/75 text-orange-600 border border-orange-100/50 flex items-center justify-center text-xs font-bold shadow-xs">
+                                <div className="flex h-8 w-8 items-center justify-center rounded border border-orange-200 bg-orange-50 text-xs font-bold text-orange-700 shadow-xs">
                                   {initials || <User className="h-3.5 w-3.5" />}
                                 </div>
                                 <span className="font-semibold text-slate-850">
@@ -425,7 +425,7 @@ export default async function EventDetailsPage({
 
             {/* Question answers table */}
             {questions.length > 0 && (
-              <div className="rounded-2xl border border-slate-100 bg-white shadow-xs overflow-x-auto">
+              <div className="overflow-x-auto rounded-md border border-slate-200 bg-white shadow-sm">
                 <div className="px-6 py-5 border-b border-slate-100">
                   <h3 className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-2">
                     Question Answers
@@ -443,12 +443,12 @@ export default async function EventDetailsPage({
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-slate-850 border-collapse">
                       <thead>
-                        <tr className="border-b border-slate-100 bg-slate-50/50 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                        <tr className="border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-600">
                           <th className="px-6 py-3">Email</th>
-                          {questions.map((q: any) => (
+                          {questions.map((q) => (
                             <th
                               key={q.id}
-                              className="px-6 py-3 break-words max-w-xs"
+                              className="max-w-xs wrap-break-word px-6 py-3"
                             >
                               {q.label}
                             </th>
@@ -458,19 +458,19 @@ export default async function EventDetailsPage({
                       <tbody className="divide-y divide-slate-100">
                         {event.attendances.map((att) => {
                           const answersMap: Record<string, string> = {};
-                          (att.answers ?? []).forEach((a: any) => {
+                          att.answers.forEach((a) => {
                             answersMap[a.questionId] = a.answer;
                           });
 
                           return (
                             <tr
                               key={att.id}
-                              className="hover:bg-slate-50/40 transition-colors duration-150"
+                              className="transition-colors hover:bg-orange-50/30"
                             >
                               <td className="px-6 py-3 whitespace-nowrap text-slate-700 font-medium">
                                 {att.email}
                               </td>
-                              {questions.map((q: any) => (
+                              {questions.map((q) => (
                                 <td
                                   key={q.id}
                                   className="px-6 py-3 text-slate-500 max-w-xs truncate"
