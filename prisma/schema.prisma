@@ -24,6 +24,10 @@ model Event {
   startsAt    DateTime
   endsAt      DateTime
   rewardPoints Int          @default(10)
+  pointGraceMinutes Int     @default(15)
+  pointDecayIntervalMinutes Int @default(15)
+  pointDecayPercent Int     @default(10)
+  minimumPoints Int         @default(1)
   token       String       @unique
   createdAt   DateTime     @default(now())
   attendances Attendance[]
@@ -38,6 +42,7 @@ model Attendance {
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   name      String
   email     String
+  pointsAwarded Int
   createdAt DateTime @default(now())
   answers   AttendanceAnswer[]
 
