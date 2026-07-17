@@ -20,6 +20,7 @@ model Event {
   title       String
   description String?
   venue       String
+  locationUrl String?
   startsAt    DateTime
   endsAt      DateTime
   rewardPoints Int          @default(10)
