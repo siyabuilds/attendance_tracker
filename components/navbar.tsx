@@ -8,9 +8,10 @@ import { LogOut, CalendarRange } from "lucide-react";
 
 interface NavBarProps {
   email?: string | null;
+  isSuperuser?: boolean;
 }
 
-export function NavBar({ email }: NavBarProps) {
+export function NavBar({ email, isSuperuser }: NavBarProps) {
   const firstLetter = email ? email.charAt(0).toUpperCase() : "";
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -101,6 +102,15 @@ export function NavBar({ email }: NavBarProps) {
                 >
                   Exports
                 </Link>
+                {isSuperuser && (
+                  <Link
+                    href="/admin/admins"
+                    className="block px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50 hover:text-orange-700 border-t border-slate-100"
+                    role="menuitem"
+                  >
+                    Admin Management
+                  </Link>
+                )}
                 <div className="border-t border-slate-100" />
                 <form action={logoutAction} className="m-0">
                   <button
