@@ -10,9 +10,10 @@ datasource db {
 }
 
 model Admin {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String
+  id          String  @id @default(uuid())
+  email       String  @unique
+  password    String
+  isSuperuser Boolean @default(false)
 }
 
 model Event {
