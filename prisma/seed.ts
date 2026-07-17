@@ -12,7 +12,7 @@ const adminEmailSchema = z
 
 async function main() {
   const parsedAdminEmail = adminEmailSchema.safeParse(
-    process.env.ADMIN_EMAIL || "admin@umuzi.org",
+    process.env.ADMIN_EMAIL || "events.admin@umuzi.org",
   );
 
   if (!parsedAdminEmail.success) {
