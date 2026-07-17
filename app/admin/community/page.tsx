@@ -3,7 +3,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { readAdminSession } from "@/lib/auth";
-import { calculateAttendancePoints } from "@/lib/attendance";
 import { prisma } from "@/lib/prisma";
 import {
   ArrowUpRight,
@@ -62,7 +61,6 @@ export default async function CommunityLeaderboardPage() {
       event: {
         select: {
           title: true,
-          rewardPoints: true,
         },
       },
     },
@@ -86,7 +84,7 @@ export default async function CommunityLeaderboardPage() {
         email: attendance.email,
         name: getDisplayName(attendance.name, attendance.email),
         attendanceCount: 1,
-        points: calculateAttendancePoints(attendance.event),
+        points: attendance.pointsAwarded,
         latestCheckInAt: attendance.createdAt,
         eventTitles: [attendance.event.title],
       });
@@ -94,7 +92,7 @@ export default async function CommunityLeaderboardPage() {
     }
 
     existingRow.attendanceCount += 1;
-    existingRow.points += calculateAttendancePoints(attendance.event);
+    existingRow.points += attendance.pointsAwarded;
     existingRow.eventTitles.push(attendance.event.title);
   }
 
@@ -115,7 +113,7 @@ export default async function CommunityLeaderboardPage() {
   const totalPeople = leaderboard.length;
   const totalCheckIns = attendances.length;
   const totalPoints = attendances.reduce(
-    (sum, attendance) => sum + calculateAttendancePoints(attendance.event),
+    (sum, attendance) => sum + attendance.pointsAwarded,
     0,
   );
   const topAttendee = leaderboard[0];
@@ -203,7 +201,7 @@ export default async function CommunityLeaderboardPage() {
               </p>
             </div>
             <p className="text-xs font-semibold text-slate-400">
-              Points come from each event&apos;s rewardPoints value
+              Points reflect each attendee&apos;s awarded score
             </p>
           </div>
 

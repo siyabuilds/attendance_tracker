@@ -175,7 +175,7 @@ export function EventForm({ mode, event }: EventFormProps) {
               id="locationUrl"
               name="locationUrl"
               type="url"
-              defaultValue={(values as any).locationUrl}
+              defaultValue={values.locationUrl}
               placeholder="https://maps.google.com/..."
               aria-invalid={Boolean(state?.errors?.locationUrl)}
               aria-describedby={getFieldErrorId(
@@ -298,6 +298,127 @@ export function EventForm({ mode, event }: EventFormProps) {
           messages={state?.errors?.description}
         />
       </div>
+
+      <section className="space-y-4 rounded-md border border-slate-200 bg-slate-50/40 p-4">
+        <div>
+          <h2 className="text-sm font-semibold text-slate-700">
+            Late-arrival points
+          </h2>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="space-y-2">
+            <label
+              className="block text-xs font-semibold text-slate-600"
+              htmlFor="pointGraceMinutes"
+            >
+              Grace period (minutes)
+            </label>
+            <input
+              className="h-11 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              id="pointGraceMinutes"
+              name="pointGraceMinutes"
+              type="number"
+              min={0}
+              max={1440}
+              step={1}
+              defaultValue={values.pointGraceMinutes}
+              aria-invalid={Boolean(state?.errors?.pointGraceMinutes)}
+              aria-describedby={getFieldErrorId(
+                "pointGraceMinutes",
+                state?.errors?.pointGraceMinutes,
+              )}
+            />
+            <FieldError
+              fieldName="pointGraceMinutes"
+              messages={state?.errors?.pointGraceMinutes}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              className="block text-xs font-semibold text-slate-600"
+              htmlFor="pointDecayIntervalMinutes"
+            >
+              Decay interval (minutes)
+            </label>
+            <input
+              className="h-11 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              id="pointDecayIntervalMinutes"
+              name="pointDecayIntervalMinutes"
+              type="number"
+              min={1}
+              max={1440}
+              step={1}
+              defaultValue={values.pointDecayIntervalMinutes}
+              aria-invalid={Boolean(state?.errors?.pointDecayIntervalMinutes)}
+              aria-describedby={getFieldErrorId(
+                "pointDecayIntervalMinutes",
+                state?.errors?.pointDecayIntervalMinutes,
+              )}
+            />
+            <FieldError
+              fieldName="pointDecayIntervalMinutes"
+              messages={state?.errors?.pointDecayIntervalMinutes}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              className="block text-xs font-semibold text-slate-600"
+              htmlFor="pointDecayPercent"
+            >
+              Decay per interval (%)
+            </label>
+            <input
+              className="h-11 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              id="pointDecayPercent"
+              name="pointDecayPercent"
+              type="number"
+              min={1}
+              max={100}
+              step={1}
+              defaultValue={values.pointDecayPercent}
+              aria-invalid={Boolean(state?.errors?.pointDecayPercent)}
+              aria-describedby={getFieldErrorId(
+                "pointDecayPercent",
+                state?.errors?.pointDecayPercent,
+              )}
+            />
+            <FieldError
+              fieldName="pointDecayPercent"
+              messages={state?.errors?.pointDecayPercent}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              className="block text-xs font-semibold text-slate-600"
+              htmlFor="minimumPoints"
+            >
+              Minimum points
+            </label>
+            <input
+              className="h-11 w-full rounded border border-slate-300 bg-white px-3 text-sm text-slate-800 shadow-xs transition focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              id="minimumPoints"
+              name="minimumPoints"
+              type="number"
+              min={1}
+              max={10000}
+              step={1}
+              defaultValue={values.minimumPoints}
+              aria-invalid={Boolean(state?.errors?.minimumPoints)}
+              aria-describedby={getFieldErrorId(
+                "minimumPoints",
+                state?.errors?.minimumPoints,
+              )}
+            />
+            <FieldError
+              fieldName="minimumPoints"
+              messages={state?.errors?.minimumPoints}
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Additional Questions */}
       <div className="space-y-4">
