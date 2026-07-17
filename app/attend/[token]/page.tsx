@@ -7,6 +7,7 @@ import {
   LockKeyhole,
   MapPin,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 
 import { AttendanceForm } from "./attendance-form";
@@ -123,16 +124,33 @@ export default async function AttendPage({ params }: AttendPageProps) {
             ) : null}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-sm text-slate-600 shadow-xs">
-              <MapPin className="h-4 w-4 text-orange-600 shrink-0" />
-              <span className="font-medium truncate">{event.venue}</span>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="flex items-start gap-2 rounded border border-orange-200 bg-orange-50 px-3 py-2.5">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-orange-600" />
+
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-orange-800">
+                  {event.venue}
+                </p>
+
+                {event.locationUrl && (
+                  <a
+                    href={event.locationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-flex items-center text-sm font-medium text-orange-600 hover:underline group"
+                  >
+                    Open in Maps
+                    <ExternalLink className="ml-1.5 h-3.5 w-3.5 text-orange-600 transform transition-colors transition-transform group-hover:translate-x-1 group-hover:text-orange-700" />
+                  </a>
+                )}
+              </div>
             </div>
-            <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-sm text-slate-600 shadow-xs">
+            <div className="flex items-center gap-2 rounded border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 shadow-sm">
               <CalendarDays className="h-4 w-4 text-orange-600 shrink-0" />
               <span className="font-medium">{formatDate(event.startsAt)}</span>
             </div>
-            <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-sm text-slate-600 shadow-xs sm:col-span-2">
+            <div className="flex items-center gap-2 rounded border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 shadow-sm sm:col-span-2">
               <Clock3 className="h-4 w-4 text-orange-600 shrink-0" />
               <span className="font-medium">
                 Check-in closes at {formatDateTime(event.endsAt)}
