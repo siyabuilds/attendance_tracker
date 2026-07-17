@@ -28,7 +28,11 @@ async function main() {
   });
 
   if (existingAdmin) {
-    console.log(`Admin user with email ${adminEmail} already exists.`);
+    await prisma.admin.update({
+      where: { email: adminEmail },
+      data: { isSuperuser: true },
+    });
+    console.log(`Admin user with email ${adminEmail} already exists. Ensured isSuperuser is true.`);
     return;
   }
 
@@ -38,10 +42,11 @@ async function main() {
     data: {
       email: adminEmail,
       password: hashedPassword,
+      isSuperuser: true,
     },
   });
 
-  console.log(`Admin user seeded successfully with email: ${admin.email}`);
+  console.log(`Admin user seeded successfully with email: ${admin.email} (Superuser: true)`);
 }
 
 main()

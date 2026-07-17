@@ -11,6 +11,20 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Enter your password.").trim(),
 });
 
+export const adminCreateSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Enter a valid email address.")
+    .endsWith("@umuzi.org", "Administrator emails must end with @umuzi.org."),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters.")
+    .trim(),
+  isSuperuser: z.boolean().default(false),
+});
+
 export type AdminSession = {
   adminId: string;
   email: string;
@@ -24,6 +38,18 @@ export type LoginFormState =
         password?: string[];
       };
       formError?: string;
+    }
+  | undefined;
+
+export type AdminFormState =
+  | {
+      errors?: {
+        email?: string[];
+        password?: string[];
+        isSuperuser?: string[];
+      };
+      formError?: string;
+      success?: boolean;
     }
   | undefined;
 
