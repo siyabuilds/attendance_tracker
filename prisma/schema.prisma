@@ -38,7 +38,6 @@ model Attendance {
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   name      String
   email     String
-  reason    String?
   createdAt DateTime @default(now())
   answers   AttendanceAnswer[]
 

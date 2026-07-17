@@ -19,7 +19,6 @@ import {
   RefreshCw,
   ChevronLeft,
   Mail,
-  FileText,
   User,
   Trophy,
 } from "lucide-react";
@@ -368,7 +367,6 @@ export default async function EventDetailsPage({
                         <th className="px-6 py-4">Attendee</th>
                         <th className="px-6 py-4">Email</th>
                         <th className="px-6 py-4">Checked-in Time</th>
-                        <th className="px-6 py-4">Reason / Notes</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -407,23 +405,6 @@ export default async function EventDetailsPage({
                             <td className="px-6 py-4 whitespace-nowrap text-slate-500 font-medium">
                               {formatDateTime.format(
                                 new Date(attendee.createdAt),
-                              )}
-                            </td>
-                            <td className="px-6 py-4 text-slate-500">
-                              {attendee.reason ? (
-                                <div className="flex items-start gap-1.5 max-w-60">
-                                  <FileText className="h-3.5 w-3.5 text-slate-450 shrink-0 mt-0.5" />
-                                  <span
-                                    className="truncate font-medium text-slate-700"
-                                    title={attendee.reason}
-                                  >
-                                    {attendee.reason}
-                                  </span>
-                                </div>
-                              ) : (
-                                <span className="text-slate-400 italic text-xs font-medium">
-                                  None provided
-                                </span>
                               )}
                             </td>
                           </tr>

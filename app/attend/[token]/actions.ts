@@ -12,7 +12,6 @@ export async function createAttendanceAction(
   const parsed = attendanceSchema.safeParse({
     name: formData.get("name")?.toString() ?? "",
     email: formData.get("email")?.toString() ?? "",
-    reason: formData.get("reason")?.toString() ?? "",
   });
 
   if (!parsed.success) {
@@ -50,8 +49,6 @@ export async function createAttendanceAction(
 
   const name = parsed.data.name.trim();
   const email = parsed.data.email.trim().toLowerCase();
-  const reason = parsed.data.reason?.trim();
-  const attendanceReason = reason && reason.length > 0 ? reason : null;
 
   const existingAttendance = await prisma.attendance.findFirst({
     where: {
@@ -91,7 +88,6 @@ export async function createAttendanceAction(
         eventId: event.id,
         name,
         email,
-        reason: attendanceReason,
         answers: answersToSave.length
           ? {
               create: answersToSave.map((a) => ({

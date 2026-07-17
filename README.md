@@ -89,7 +89,7 @@ You can override both values with `ADMIN_EMAIL` and `ADMIN_PASSWORD` before runn
 
 - Events have a generated 16-character attendance token.
 - Check-in is allowed only while the event is between `startsAt` and `endsAt`.
-- Each attendance submission stores name, email, and an optional reason.
+- Each attendance submission stores name, email, and answers to configured event questions.
 - A single email can only check in once per event.
 - Leaderboard points come from each event's `rewardPoints` value.
 

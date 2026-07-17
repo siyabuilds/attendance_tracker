@@ -13,11 +13,6 @@ export const attendanceSchema = z.object({
     .trim()
     .email("Enter a valid email address.")
     .max(254, "Keep the email under 254 characters."),
-  reason: z
-    .string()
-    .trim()
-    .max(500, "Keep the reason under 500 characters.")
-    .optional(),
 });
 
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;

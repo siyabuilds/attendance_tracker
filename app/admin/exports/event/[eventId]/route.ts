@@ -39,7 +39,7 @@ export async function GET(
   }
 
   const questionCols = event.questions.map((q) => q.label);
-  const header = ["Name", "Email", "Reason", ...questionCols];
+  const header = ["Name", "Email", ...questionCols];
   const rows = [header];
 
   for (const attendance of event.attendances) {
@@ -55,7 +55,6 @@ export async function GET(
     rows.push([
       csvEscape(attendance.name),
       csvEscape(attendance.email),
-      csvEscape(attendance.reason ?? ""),
       ...dynamicAnswers,
     ]);
   }
