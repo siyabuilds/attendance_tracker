@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { calculateAttendancePoints } from "@/lib/attendance";
+
+type LeaderboardRow = {
+  email: string;
+  name: string;
+  attendanceCount: number;
+  points: number;
+  latestCheckInAt: Date;
+};
 
 function csvEscape(value: unknown) {
   if (value === null || value === undefined) return "";
@@ -14,12 +21,12 @@ function csvEscape(value: unknown) {
 export async function GET() {
   const attendances = await prisma.attendance.findMany({
     include: {
-      event: { select: { title: true, rewardPoints: true } },
+      event: { select: { title: true } },
     },
     orderBy: [{ email: "asc" }, { createdAt: "desc" }],
   });
 
-  const leaderboardByEmail = new Map();
+  const leaderboardByEmail = new Map<string, LeaderboardRow>();
 
   for (const attendance of attendances) {
     const existing = leaderboardByEmail.get(attendance.email);
@@ -31,21 +38,21 @@ export async function GET() {
         email: attendance.email,
         name: displayName,
         attendanceCount: 1,
-        points: calculateAttendancePoints(attendance.event),
+        points: attendance.pointsAwarded,
         latestCheckInAt: attendance.createdAt,
       });
       continue;
     }
 
     existing.attendanceCount += 1;
-    existing.points += calculateAttendancePoints(attendance.event);
+    existing.points += attendance.pointsAwarded;
     if (attendance.createdAt > existing.latestCheckInAt) {
       existing.latestCheckInAt = attendance.createdAt;
     }
   }
 
   const leaderboard = Array.from(leaderboardByEmail.values()).sort(
-    (a: any, b: any) => b.points - a.points,
+    (left, right) => right.points - left.points,
   );
 
   const rows = [];
