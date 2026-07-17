@@ -165,6 +165,34 @@ export function EventForm({ mode, event }: EventFormProps) {
         <div className="space-y-2">
           <label
             className="block text-xs font-semibold text-slate-600"
+            htmlFor="locationUrl"
+          >
+            Maps Link (optional)
+          </label>
+          <InputShell icon={<MapPin className="h-4 w-4" />}>
+            <input
+              className="h-11 w-full rounded border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+              id="locationUrl"
+              name="locationUrl"
+              type="url"
+              defaultValue={(values as any).locationUrl}
+              placeholder="https://maps.google.com/..."
+              aria-invalid={Boolean(state?.errors?.locationUrl)}
+              aria-describedby={getFieldErrorId(
+                "locationUrl",
+                state?.errors?.locationUrl,
+              )}
+            />
+          </InputShell>
+          <FieldError
+            fieldName="locationUrl"
+            messages={state?.errors?.locationUrl}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label
+            className="block text-xs font-semibold text-slate-600"
             htmlFor="rewardPoints"
           >
             Reward Points

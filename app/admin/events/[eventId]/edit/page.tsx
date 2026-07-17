@@ -56,6 +56,7 @@ export default async function EventEditPage({ params }: EventEditPageProps) {
               title: event.title,
               description: event.description,
               venue: event.venue,
+              locationUrl: event.locationUrl,
               rewardPoints: event.rewardPoints,
               startsAt: event.startsAt,
               endsAt: event.endsAt,

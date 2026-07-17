@@ -168,6 +168,18 @@ export default async function EventDetailsPage({
                     <p className="text-sm text-slate-500 mt-0.5">
                       {event.venue}
                     </p>
+                    {event.locationUrl ? (
+                      <p className="mt-2">
+                        <a
+                          href={event.locationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-orange-600 hover:underline"
+                        >
+                          Open in Maps
+                        </a>
+                      </p>
+                    ) : null}
                   </div>
                 </div>
 

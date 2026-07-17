@@ -44,6 +44,7 @@ export async function createEventAction(
     title: formData.get("title")?.toString() ?? "",
     description: formData.get("description")?.toString() ?? "",
     venue: formData.get("venue")?.toString() ?? "",
+    locationUrl: formData.get("locationUrl")?.toString() ?? "",
     rewardPoints: formData.get("rewardPoints")?.toString() ?? "",
     startsAt: formData.get("startsAt")?.toString() ?? "",
     endsAt: formData.get("endsAt")?.toString() ?? "",
@@ -61,6 +62,9 @@ export async function createEventAction(
     title: parsed.data.title,
     description: description.length > 0 ? description : null,
     venue: parsed.data.venue,
+    locationUrl: parsed.data.locationUrl?.length
+      ? parsed.data.locationUrl
+      : null,
     rewardPoints: parsed.data.rewardPoints,
     startsAt: new Date(parsed.data.startsAt),
     endsAt: new Date(parsed.data.endsAt),
@@ -120,6 +124,7 @@ export async function updateEventAction(
     title: formData.get("title")?.toString() ?? "",
     description: formData.get("description")?.toString() ?? "",
     venue: formData.get("venue")?.toString() ?? "",
+    locationUrl: formData.get("locationUrl")?.toString() ?? "",
     rewardPoints: formData.get("rewardPoints")?.toString() ?? "",
     startsAt: formData.get("startsAt")?.toString() ?? "",
     endsAt: formData.get("endsAt")?.toString() ?? "",
@@ -137,6 +142,9 @@ export async function updateEventAction(
     title: parsed.data.title,
     description: description.length > 0 ? description : null,
     venue: parsed.data.venue,
+    locationUrl: parsed.data.locationUrl?.length
+      ? parsed.data.locationUrl
+      : null,
     rewardPoints: parsed.data.rewardPoints,
     startsAt: new Date(parsed.data.startsAt),
     endsAt: new Date(parsed.data.endsAt),

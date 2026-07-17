@@ -16,6 +16,13 @@ export const eventSchema = z
       .trim()
       .min(1, "Enter a venue.")
       .max(120, "Keep the venue under 120 characters."),
+    locationUrl: z
+      .string()
+      .trim()
+      .optional()
+      .refine((v) => !v || /^(https?:\/\/)/i.test(v), {
+        message: "Enter a valid map link.",
+      }),
     rewardPoints: z.coerce
       .number()
       .int("Enter whole reward points.")
@@ -64,6 +71,7 @@ export type EventRecordForForm = {
   title: string;
   description: string | null;
   venue: string;
+  locationUrl?: string | null;
   rewardPoints: number;
   startsAt: Date;
   endsAt: Date;
@@ -86,6 +94,7 @@ export function eventToFormValues(event?: EventRecordForForm): EventFormValues {
     title: event?.title ?? "",
     description: event?.description ?? "",
     venue: event?.venue ?? "",
+    locationUrl: event?.locationUrl ?? "",
     rewardPoints: event?.rewardPoints ?? 10,
     startsAt: event ? formatDateTimeLocal(event.startsAt) : "",
     endsAt: event ? formatDateTimeLocal(event.endsAt) : "",
