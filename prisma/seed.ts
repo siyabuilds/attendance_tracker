@@ -1,10 +1,26 @@
-import 'dotenv/config';
-import { prisma } from '../lib/prisma';
-import bcrypt from 'bcryptjs';
+import "dotenv/config";
+import bcrypt from "bcryptjs";
+import { z } from "zod";
+
+import { prisma } from "../lib/prisma";
+
+const adminEmailSchema = z
+  .email({ error: "ADMIN_EMAIL must be a valid email address." })
+  .trim()
+  .toLowerCase()
+  .endsWith("@umuzi.org", "Administrator emails must end with @umuzi.org.");
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'adminpassword123';
+  const parsedAdminEmail = adminEmailSchema.safeParse(
+    process.env.ADMIN_EMAIL || "admin@umuzi.org",
+  );
+
+  if (!parsedAdminEmail.success) {
+    throw new Error(parsedAdminEmail.error.issues[0]?.message);
+  }
+
+  const adminEmail = parsedAdminEmail.data;
+  const adminPassword = process.env.ADMIN_PASSWORD || "adminpassword123";
 
   // Check if admin already exists
   const existingAdmin = await prisma.admin.findUnique({
