@@ -182,23 +182,6 @@ export function AttendanceForm({
             <FieldError fieldName="email" messages={state?.errors?.email} />
           </div>
 
-          <div className="space-y-2">
-            <Label icon={<MessageSquareText className="h-3.5 w-3.5" />}>
-              Reason for attending
-            </Label>
-            <textarea
-              className="min-h-28 w-full resize-y rounded border border-slate-300 bg-white px-3 py-3 text-sm text-slate-800 shadow-xs transition placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
-              name="reason"
-              placeholder="Optional notes, purpose, or session you're attending"
-              aria-invalid={Boolean(state?.errors?.reason)}
-              aria-describedby={getFieldErrorId(
-                "reason",
-                state?.errors?.reason,
-              )}
-            />
-            <FieldError fieldName="reason" messages={state?.errors?.reason} />
-          </div>
-
           {questions.length > 0 && (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-700">
