@@ -1,4 +1,5 @@
 import { cookies, headers } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
@@ -275,12 +276,13 @@ export default async function EventDetailsPage({
               <div className="flex w-full flex-col items-center justify-center gap-4 rounded-md border border-orange-200 bg-orange-50/40 p-5">
                 {/* QR Code Display */}
                 <div className="rounded border border-slate-200 bg-white p-3 shadow-xs">
-                  <img
+                  <Image
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(checkInUrl)}`}
                     alt="Attendance Check-In QR"
                     width={200}
                     height={200}
                     className="w-45 h-45 object-contain"
+                    unoptimized
                   />
                 </div>
 
