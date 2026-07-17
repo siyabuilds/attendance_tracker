@@ -46,6 +46,11 @@ export async function createEventAction(
     venue: formData.get("venue")?.toString() ?? "",
     locationUrl: formData.get("locationUrl")?.toString() ?? "",
     rewardPoints: formData.get("rewardPoints")?.toString() ?? "",
+    pointGraceMinutes: formData.get("pointGraceMinutes")?.toString() ?? "",
+    pointDecayIntervalMinutes:
+      formData.get("pointDecayIntervalMinutes")?.toString() ?? "",
+    pointDecayPercent: formData.get("pointDecayPercent")?.toString() ?? "",
+    minimumPoints: formData.get("minimumPoints")?.toString() ?? "",
     startsAt: formData.get("startsAt")?.toString() ?? "",
     endsAt: formData.get("endsAt")?.toString() ?? "",
   });
@@ -66,6 +71,10 @@ export async function createEventAction(
       ? parsed.data.locationUrl
       : null,
     rewardPoints: parsed.data.rewardPoints,
+    pointGraceMinutes: parsed.data.pointGraceMinutes,
+    pointDecayIntervalMinutes: parsed.data.pointDecayIntervalMinutes,
+    pointDecayPercent: parsed.data.pointDecayPercent,
+    minimumPoints: parsed.data.minimumPoints,
     startsAt: new Date(parsed.data.startsAt),
     endsAt: new Date(parsed.data.endsAt),
   };
@@ -126,6 +135,11 @@ export async function updateEventAction(
     venue: formData.get("venue")?.toString() ?? "",
     locationUrl: formData.get("locationUrl")?.toString() ?? "",
     rewardPoints: formData.get("rewardPoints")?.toString() ?? "",
+    pointGraceMinutes: formData.get("pointGraceMinutes")?.toString() ?? "",
+    pointDecayIntervalMinutes:
+      formData.get("pointDecayIntervalMinutes")?.toString() ?? "",
+    pointDecayPercent: formData.get("pointDecayPercent")?.toString() ?? "",
+    minimumPoints: formData.get("minimumPoints")?.toString() ?? "",
     startsAt: formData.get("startsAt")?.toString() ?? "",
     endsAt: formData.get("endsAt")?.toString() ?? "",
   });
@@ -146,6 +160,10 @@ export async function updateEventAction(
       ? parsed.data.locationUrl
       : null,
     rewardPoints: parsed.data.rewardPoints,
+    pointGraceMinutes: parsed.data.pointGraceMinutes,
+    pointDecayIntervalMinutes: parsed.data.pointDecayIntervalMinutes,
+    pointDecayPercent: parsed.data.pointDecayPercent,
+    minimumPoints: parsed.data.minimumPoints,
     startsAt: new Date(parsed.data.startsAt),
     endsAt: new Date(parsed.data.endsAt),
   };

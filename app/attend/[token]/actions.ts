@@ -2,7 +2,11 @@
 
 import { Prisma } from "@prisma/client";
 
-import { attendanceSchema, type AttendanceFormState } from "@/lib/attendance";
+import {
+  attendanceSchema,
+  calculateAttendancePoints,
+  type AttendanceFormState,
+} from "@/lib/attendance";
 import { prisma } from "@/lib/prisma";
 
 export async function createAttendanceAction(
@@ -82,12 +86,15 @@ export async function createAttendanceAction(
     };
   }
 
+  const pointsAwarded = calculateAttendancePoints(event, now);
+
   try {
     await prisma.attendance.create({
       data: {
         eventId: event.id,
         name,
         email,
+        pointsAwarded,
         answers: answersToSave.length
           ? {
               create: answersToSave.map((a) => ({

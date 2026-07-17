@@ -41,8 +41,43 @@ export function isAttendanceOpen(
   return now >= event.startsAt && now <= event.endsAt;
 }
 
-export function calculateAttendancePoints(event: { rewardPoints: number }) {
-  return event.rewardPoints;
+export function calculateAttendancePoints(
+  event: {
+    startsAt: Date;
+    endsAt: Date;
+    rewardPoints: number;
+    pointGraceMinutes: number;
+    pointDecayIntervalMinutes: number;
+    pointDecayPercent: number;
+    minimumPoints: number;
+  },
+  checkedInAt = new Date(),
+) {
+  const eventDurationMinutes =
+    (event.endsAt.getTime() - event.startsAt.getTime()) / 60_000;
+
+  if (eventDurationMinutes <= 60) {
+    return event.rewardPoints;
+  }
+
+  const minutesLate = Math.max(
+    0,
+    Math.floor((checkedInAt.getTime() - event.startsAt.getTime()) / 60_000),
+  );
+
+  if (minutesLate <= event.pointGraceMinutes) {
+    return event.rewardPoints;
+  }
+
+  const completedDecayIntervals = Math.floor(
+    (minutesLate - event.pointGraceMinutes) / event.pointDecayIntervalMinutes,
+  );
+  const decayedPoints = Math.round(
+    event.rewardPoints *
+      (1 - (completedDecayIntervals * event.pointDecayPercent) / 100),
+  );
+
+  return Math.max(event.minimumPoints, decayedPoints);
 }
 
 export function getAttendancePoints(attendanceCount: number) {

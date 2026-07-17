@@ -28,6 +28,26 @@ export const eventSchema = z
       .int("Enter whole reward points.")
       .min(1, "Set at least 1 reward point.")
       .max(10000, "Keep the reward points at 10,000 or less."),
+    pointGraceMinutes: z.coerce
+      .number()
+      .int("Enter whole minutes.")
+      .min(0, "Grace period cannot be negative.")
+      .max(1440, "Keep the grace period to 24 hours or less."),
+    pointDecayIntervalMinutes: z.coerce
+      .number()
+      .int("Enter whole minutes.")
+      .min(1, "Set an interval of at least 1 minute.")
+      .max(1440, "Keep the interval to 24 hours or less."),
+    pointDecayPercent: z.coerce
+      .number()
+      .int("Enter a whole percentage.")
+      .min(1, "Set a decay of at least 1%.")
+      .max(100, "Keep the decay at 100% or less."),
+    minimumPoints: z.coerce
+      .number()
+      .int("Enter whole points.")
+      .min(1, "Set at least 1 minimum point.")
+      .max(10000, "Keep the minimum points at 10,000 or less."),
     startsAt: z
       .string()
       .trim()
@@ -54,7 +74,11 @@ export const eventSchema = z
       message: "End time must be after start time.",
       path: ["endsAt"],
     },
-  );
+  )
+  .refine((value) => value.minimumPoints <= value.rewardPoints, {
+    message: "Minimum points cannot exceed reward points.",
+    path: ["minimumPoints"],
+  });
 
 export type EventFormValues = z.infer<typeof eventSchema>;
 
@@ -73,6 +97,10 @@ export type EventRecordForForm = {
   venue: string;
   locationUrl?: string | null;
   rewardPoints: number;
+  pointGraceMinutes: number;
+  pointDecayIntervalMinutes: number;
+  pointDecayPercent: number;
+  minimumPoints: number;
   startsAt: Date;
   endsAt: Date;
 };
@@ -96,6 +124,10 @@ export function eventToFormValues(event?: EventRecordForForm): EventFormValues {
     venue: event?.venue ?? "",
     locationUrl: event?.locationUrl ?? "",
     rewardPoints: event?.rewardPoints ?? 10,
+    pointGraceMinutes: event?.pointGraceMinutes ?? 15,
+    pointDecayIntervalMinutes: event?.pointDecayIntervalMinutes ?? 15,
+    pointDecayPercent: event?.pointDecayPercent ?? 10,
+    minimumPoints: event?.minimumPoints ?? 1,
     startsAt: event ? formatDateTimeLocal(event.startsAt) : "",
     endsAt: event ? formatDateTimeLocal(event.endsAt) : "",
   };
